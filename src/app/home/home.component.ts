@@ -1,12 +1,16 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { PokemonService } from '../api/pokemon.service';
+import { firstValueFrom } from 'rxjs';
+import { Card } from '../models/card';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  cards: any[] = [];
+  loading = true;
+
+  cards: Card[] = [];
 
   pageWidth = 3;
 
@@ -17,19 +21,17 @@ export class HomeComponent implements OnInit {
   currentPageRight = 1;
 
   constructor(
-    private http: HttpClient
+    private pokemon: PokemonService
   ) { }
 
-  ngOnInit(): void {
-    this.getCards();
+  async ngOnInit(): Promise<void> {
+    await this.getCards();
+    this.loading = false;
   }
 
-  getCards(): void {
-    this.http
-    .get<any>(`https://api.pokemontcg.io/v2/cards?&q=set.id:"swsh5"`)
-    .subscribe(data => {
-      this.cards = data.data;
-    })
+  async getCards(): Promise<void> {
+    const data = await firstValueFrom(this.pokemon.getCards());
+    this.cards = data.data;
   }
 
   get cardsLeft(): any[] {
