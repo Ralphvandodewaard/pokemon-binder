@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
 import { Card } from '../models/card';
+import { Set } from '../models/set';
+import { Size } from '../models/size';
+import { Filter } from '../models/filter';
 
 @Component({
   selector: 'app-home',
@@ -10,23 +13,72 @@ import { Card } from '../models/card';
 export class HomeComponent implements OnInit {
   loading = true;
 
+  sets: Set[] = [];
+
   cards: Card[] = [];
 
-  pageWidth = 3;
+  sizes: Size[] = [
+    {
+      id: 1,
+      width: 2,
+      height: 2
+    },
+    {
+      id: 2,
+      width: 3,
+      height: 3
+    },
+    {
+      id: 3,
+      width: 3,
+      height: 4
+    }
+  ];
 
-  pageHeight = 3;
+  filters: Filter[] = [
+    {
+      id: 1,
+      description: 'Leave first page empty'
+    },
+    {
+      id: 2,
+      description: 'Start each type on new page'
+    },
+    {
+      id: 3,
+      description: 'Exclude commons, uncommons, rares'
+    },
+    {
+      id: 4,
+      description: 'Exclude holo V rares'
+    },
+    {
+      id: 5,
+      description: 'Exclude ultra rares'
+    },
+    {
+      id: 6,
+      description: 'Exclude secret rares'
+    }
+  ]
 
-  currentPageLeft = 0;
+  selectedSet: Set | null = null;
 
-  currentPageRight = 1;
+  selectedSize: Size | null = null;
 
   constructor(
     private pokemon: PokemonService
   ) { }
 
   async ngOnInit(): Promise<void> {
+    await this.getSets();
     await this.getCards();
     this.loading = false;
+  }
+
+  async getSets(): Promise<void> {
+    const data = await firstValueFrom(this.pokemon.getSets());
+    this.sets = data.data;
   }
 
   async getCards(): Promise<void> {
@@ -34,37 +86,20 @@ export class HomeComponent implements OnInit {
     this.cards = data.data;
   }
 
-  get cardsLeft(): any[] {
-    if (this.currentPageLeft > 0) {
-      return this.cards.slice((this.currentPageLeft * this.pageSize) - this.pageSize, this.currentPageLeft * this.pageSize);
-    } else {
-      return [];
-    }
+  selectSet(set: Set): void {
+    this.selectedSet = set;
   }
 
-  get cardsRight(): any[] {
-    if (this.currentPageRight > 0) {
-      return this.cards.slice((this.currentPageRight * this.pageSize) - this.pageSize, this.currentPageRight * this.pageSize);
-    } else {
-      return [];
-    }
+  selectSize(size: Size): void {
+    this.selectedSize = size;
   }
 
-  get pageSize(): number {
-    return this.pageWidth * this.pageHeight;
+  gridClasses(size: Size): string {
+    return `grid-cols-${size.height} grid-rows-${size.width}`;
   }
 
-  previousPage(): void {
-    if (this.currentPageLeft > 0) {
-      this.currentPageLeft = this.currentPageLeft - 2;
-      this.currentPageRight = this.currentPageRight - 2;
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPageRight < (this.cards.length / this.pageSize)) {
-      this.currentPageLeft = this.currentPageLeft + 2;
-      this.currentPageRight = this.currentPageRight + 2;
-    }
+  toggleFilter(clickedFilter: Filter): void {
+    let filter = this.filters.filter((filter: Filter) => filter.id === clickedFilter.id)[0];
+    filter.enabled = !filter.enabled;
   }
 }

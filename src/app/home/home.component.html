@@ -1,48 +1,101 @@
-<div class="flex flex-col items-center gap-4">
-  <div class="flex divide-x-4 divide-black border-4 border-black rounded">
-    <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 w-[432px] h-[584.03px]">
+<div class="flex flex-col items-start gap-8">
+  <div class="flex flex-col gap-4">
+    <p class="text-2xl font-bold">
+      Select set
+    </p>
+    <div class="flex gap-2 flex-wrap">
       <div
-        *ngFor="let card of cardsLeft"
-        class="w-32"
+        *ngFor="let set of sets"
+        [class]="selectedSet && set.id === selectedSet.id ? 'border-secondary' : 'border-transparent hover:border-secondary'"
+        class="relative flex flex-col items-center gap-2 w-44 p-4 bg-white border-2 rounded-lg shadow cursor-pointer duration-100"
+        (click)="selectSet(set)"
       >
-        <img
-          [src]="card.images.small"
-          class="w-full h-auto"
-        />
-      </div>
-    </div>
-    <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 w-[432px] h-[584.03px]">
-      <div
-        *ngFor="let card of cardsRight"
-        class="w-32"
-      >
-        <img
-          [src]="card.images.small"
-          class="w-full h-auto"
-        />
+        <div class="flex items-center h-20">
+          <img
+            [src]="set.images.logo"
+            [alt]="set.name"
+            class="max-w-full max-h-full"
+          />
+        </div>
+        <div class="flex items-center h-12">
+          <p class="text-center">
+            {{ set.name }}
+          </p>
+        </div>
+        <div
+          [class]="selectedSet && set.id === selectedSet.id ? 'opacity-100' : 'opacity-0'"
+          class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
+        >
+          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+        </div>
       </div>
     </div>
   </div>
-  <div class="flex justify-between gap-2 w-full">
-    <p>
-      {{ currentPageLeft }}
+  <div class="flex flex-col gap-4">
+    <p class="text-2xl font-bold">
+      Select binder page size
     </p>
-    <div class="flex gap-4">
-      <button
-        class="w-20 p-2 bg-red-300"
-        (click)="previousPage()"
+    <div class="flex gap-2 flex-wrap">
+      <div
+        *ngFor="let size of sizes"
+        [class]="selectedSize && size.id === selectedSize.id ? 'border-secondary' : 'border-transparent hover:border-secondary'"
+        class="relative flex flex-col items-center gap-2 w-44 p-4 bg-white border-2 rounded-lg shadow cursor-pointer duration-100"
+        (click)="selectSize(size)"
       >
-        Previous
-      </button>
-      <button
-        class="w-20 p-2 bg-green-300"
-        (click)="nextPage()"
-      >
-        Next
-      </button>
+        <div class="flex items-center h-20">
+          <div
+            *ngFor="let el of [].constructor(2)"
+            [class]="gridClasses(size)"
+            class="grid gap-1 p-1 border border-gray-400"
+          >
+            <div
+              *ngFor="let el of [].constructor(size.height * size.width)"
+              class="h-4 w-3 bg-gray-800 rounded-sm"
+            ></div>
+          </div>
+        </div>
+        <div class="flex items-center h-12">
+          <p class="text-center">
+            {{ size.width }}x{{ size.height }}
+          </p>
+        </div>
+        <div
+          [class]="selectedSize && size.id === selectedSize.id ? 'opacity-100' : 'opacity-0'"
+          class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
+        >
+          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+        </div>
+      </div>
     </div>
-    <p>
-      {{ currentPageRight }}
-    </p>
   </div>
+  <div class="flex flex-col gap-4">
+    <p class="text-2xl font-bold">
+      Select filters
+    </p>
+    <div class="flex flex-col gap-4">
+      <div
+        *ngFor="let filter of filters"
+        class="grid grid-cols-2 gap-8"
+      >
+        <p>
+          {{ filter.description }}
+        </p>
+        <div
+          [class]="filter.enabled ? 'bg-secondary' : 'bg-disabled hover:bg-secondary'"
+          class="flex items-center justify-center h-6 w-6 rounded-full cursor-pointer duration-100"
+          (click)="toggleFilter(filter)"
+        >
+          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    class="px-8 py-4 bg-secondary hover:bg-opacity-90 text-white font-bold rounded-full duration-100"
+  >
+    Calculate
+  </button>
+  <app-binder
+    [cards]="cards"
+  ></app-binder>
 </div>

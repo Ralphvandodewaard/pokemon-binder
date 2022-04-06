@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CardsDto } from '../models/cardsDto';
+import { SetsDto } from '../models/setsDto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,13 @@ export class PokemonService {
     private http: HttpClient
   ) { }
 
+  getSets(): Observable<SetsDto> {
+    return this.http
+    .get<SetsDto>(`${this.baseUrl}/sets?q=series:"Sword %26 Shield"`);
+  }
+
   getCards(): Observable<CardsDto> {
     return this.http
-    .get<CardsDto>(`${this.baseUrl}/cards?&q=set.id:"swsh5"`);
+    .get<CardsDto>(`${this.baseUrl}/cards?q=set.id:swsh5`);
   }
 }
