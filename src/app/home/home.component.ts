@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit {
 
   loadingCards = false;
 
+  errorMessage = '';
+
   sets: Set[] = [];
 
   cards: Card[] = [];
@@ -105,10 +107,17 @@ export class HomeComponent implements OnInit {
   }
 
   async calculate(): Promise<void> {
-    if (this.selectedSet) {
+    this.errorMessage = '';
+    if (this.selectedSet && this.selectedSize) {
       this.loadingCards = true;
       await this.getCards(this.selectedSet.id);
       this.loadingCards = false;
+    } else {
+      if (!this.selectedSet) {
+        this.errorMessage = 'Please select a set';
+      } else if (!this.selectedSize) {
+        this.errorMessage = 'Please select a binder page size';
+      }
     }
   }
 }
