@@ -10,6 +10,9 @@ module.exports = {
         cloud: '#F5F9FB',
         disabled: '#E3E6EB',
         red: '#DA4658'
+      },
+      gridTemplateColumns: {
+        settings: '112px, minmax(0, 1fr)'
       }
     }
   },

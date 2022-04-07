@@ -133,4 +133,8 @@ export class HomeComponent implements OnInit {
   scrollToTop(): void {
     window.scrollTo(0, 0);
   }
+
+  get pageAmount(): number {
+    return Math.ceil(this.cards.length / (this.selectedSize!.height * this.selectedSize!.width));
+  }
 }
