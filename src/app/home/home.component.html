@@ -1,4 +1,7 @@
-<div class="flex flex-col items-start gap-8">
+<div
+  *ngIf="!showBinder"
+  class="flex flex-col gap-8"
+>
   <div class="flex flex-col gap-4">
     <p class="text-2xl font-bold">
       Select set
@@ -68,7 +71,7 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col gap-4">
+  <div class="flex flex-col items-start gap-4">
     <p class="text-2xl font-bold">
       Select filters
     </p>
@@ -112,9 +115,56 @@
       {{ errorMessage }}
     </p>
   </div>
-  <app-binder
-    *ngIf="selectedSet && selectedSize && cards.length > 0"
-    [cards]="cards"
-    [size]="selectedSize"
-  ></app-binder>
+</div>
+<div
+  *ngIf="selectedSet && selectedSize && showBinder"
+  class="flex flex-col items-start gap-8"
+>
+  <button
+    class="flex justify-center w-32 py-4 bg-red hover:bg-opacity-90 text-white font-bold rounded-full duration-100"
+    (click)="showBinder = false"
+  >
+    Back
+  </button>
+  <div class="flex flex-col gap-4">
+    <p class="text-2xl font-bold">
+      Selected settings
+    </p>
+    <div class="flex flex-col gap-2">
+      <div class="grid grid-cols-2 gap-8">
+        <p>
+          Series:
+        </p>
+        <p>
+          {{ selectedSet.series }}
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-8">
+        <p>
+          Set:
+        </p>
+        <p>
+          {{ selectedSet.name }}
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-8">
+        <p>
+          Page size:
+        </p>
+        <p>
+          {{ selectedSize.height }}x{{ selectedSize.width }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col gap-4">
+    <p class="text-2xl font-bold">
+      Binder preview
+    </p>
+    <app-binder
+      *ngIf="selectedSet && selectedSize && cards.length > 0"
+      [cards]="cards"
+      [size]="selectedSize"
+    ></app-binder>
+  </div>
 </div>

@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit {
 
   loadingCards = false;
 
+  showBinder = false;
+
   errorMessage = '';
 
   sets: Set[] = [];
@@ -107,11 +109,12 @@ export class HomeComponent implements OnInit {
   }
 
   async calculate(): Promise<void> {
-    this.errorMessage = '';
     if (this.selectedSet && this.selectedSize) {
       this.loadingCards = true;
       await this.getCards(this.selectedSet.id);
       this.loadingCards = false;
+      this.showBinder = true;
+      this.errorMessage = '';
     } else {
       if (!this.selectedSet) {
         this.errorMessage = 'Please select a set';
