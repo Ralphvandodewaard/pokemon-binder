@@ -20,9 +20,10 @@ export class BinderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get widthStyle(): string {
+  get sizeStyles(): string {
+    const height = (this.size.height * 178.672) + ((this.size.height - 1) * 8) + (2 * 16);
     const width = (this.size.width * 128) + ((this.size.width - 1) * 8) + (2 * 16);
-    return `width: ${width}px;`;
+    return `height: ${height}px; width: ${width}px;`;
   }
 
   get gridClasses(): string {
