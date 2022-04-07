@@ -115,6 +115,7 @@ export class HomeComponent implements OnInit {
       this.loadingCards = false;
       this.showBinder = true;
       this.errorMessage = '';
+      this.scrollToTop();
     } else {
       if (!this.selectedSet) {
         this.errorMessage = 'Please select a set';
@@ -122,5 +123,14 @@ export class HomeComponent implements OnInit {
         this.errorMessage = 'Please select a binder page size';
       }
     }
+  }
+
+  back(): void {
+    this.showBinder = false;
+    this.scrollToTop();
+  }
+
+  scrollToTop(): void {
+    window.scrollTo(0, 0);
   }
 }
