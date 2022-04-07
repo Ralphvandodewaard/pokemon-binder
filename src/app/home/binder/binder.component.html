@@ -1,25 +1,20 @@
 <div class="flex flex-col items-center gap-4">
   <div class="flex divide-x-4 divide-black border-4 border-black rounded">
-    <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 w-[432px] h-[584.03px]">
+    <div *ngFor="let page of pages">
       <div
-        *ngFor="let card of cardsLeft"
-        class="w-32"
+        [style]="widthStyle"
+        [class]="gridClasses"
+        class="grid gap-2 p-4"
       >
-        <img
-          [src]="card.images.small"
-          class="w-full h-auto"
-        />
-      </div>
-    </div>
-    <div class="grid grid-cols-3 grid-rows-3 gap-2 p-4 w-[432px] h-[584.03px]">
-      <div
-        *ngFor="let card of cardsRight"
-        class="w-32"
-      >
-        <img
-          [src]="card.images.small"
-          class="w-full h-auto"
-        />
+        <div
+          *ngFor="let card of page"
+          class="w-32"
+        >
+          <img
+            [src]="card.images.small"
+            class="w-full h-auto"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -29,13 +24,13 @@
     </p>
     <div class="flex gap-4">
       <button
-        class="w-20 p-2 bg-red-300"
+        class="w-20 p-2 bg-red text-white"
         (click)="previousPage()"
       >
         Previous
       </button>
       <button
-        class="w-20 p-2 bg-green-300"
+        class="w-20 p-2 bg-secondary text-white"
         (click)="nextPage()"
       >
         Next

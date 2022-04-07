@@ -32,8 +32,8 @@ export class HomeComponent implements OnInit {
     },
     {
       id: 3,
-      width: 3,
-      height: 4
+      width: 4,
+      height: 3
     }
   ];
 
@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
   }
 
   gridClasses(size: Size): string {
-    return `grid-cols-${size.height} grid-rows-${size.width}`;
+    return `grid-cols-${size.width} grid-rows-${size.height}`;
   }
 
   toggleFilter(clickedFilter: Filter): void {

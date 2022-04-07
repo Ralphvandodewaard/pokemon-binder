@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Card } from 'src/app/models/card';
+import { Size } from 'src/app/models/size';
 
 @Component({
   selector: 'app-binder',
@@ -8,9 +9,7 @@ import { Card } from 'src/app/models/card';
 export class BinderComponent implements OnInit {
   @Input() cards!: Card[];
 
-  pageWidth = 3;
-
-  pageHeight = 3;
+  @Input() size!: Size;
 
   currentPageLeft = 0;
 
@@ -21,7 +20,20 @@ export class BinderComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  get cardsLeft(): any[] {
+  get widthStyle(): string {
+    const width = (this.size.width * 128) + ((this.size.width - 1) * 8) + (2 * 16);
+    return `width: ${width}px;`;
+  }
+
+  get gridClasses(): string {
+    return `grid-cols-${this.size.width} grid-rows-${this.size.height}`;
+  }
+
+  get pages(): Card[][] {
+    return [this.cardsLeft, this.cardsRight];
+  }
+
+  get cardsLeft(): Card[] {
     if (this.currentPageLeft > 0) {
       return this.cards.slice((this.currentPageLeft * this.pageSize) - this.pageSize, this.currentPageLeft * this.pageSize);
     } else {
@@ -29,7 +41,7 @@ export class BinderComponent implements OnInit {
     }
   }
 
-  get cardsRight(): any[] {
+  get cardsRight(): Card[] {
     if (this.currentPageRight > 0) {
       return this.cards.slice((this.currentPageRight * this.pageSize) - this.pageSize, this.currentPageRight * this.pageSize);
     } else {
@@ -38,7 +50,7 @@ export class BinderComponent implements OnInit {
   }
 
   get pageSize(): number {
-    return this.pageWidth * this.pageHeight;
+    return this.size.height * this.size.width;
   }
 
   previousPage(): void {
