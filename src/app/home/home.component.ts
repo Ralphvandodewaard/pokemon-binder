@@ -110,9 +110,14 @@ export class HomeComponent implements OnInit {
 
   async calculate(): Promise<void> {
     if (this.selectedSet && this.selectedSize) {
-      this.loadingCards = true;
-      await this.getCards(this.selectedSet.id);
-      this.loadingCards = false;
+      if (
+          this.cards.length === 0 ||
+          (this.cards.length > 0 && this.cards[0].set.id !== this.selectedSet.id)
+        ) {
+        this.loadingCards = true;
+        await this.getCards(this.selectedSet.id);
+        this.loadingCards = false;
+      }
       this.showBinder = true;
       this.errorMessage = '';
       this.scrollToTop();
