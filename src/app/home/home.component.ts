@@ -11,7 +11,9 @@ import { Filter } from '../models/filter';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  loading = true;
+  loadingSets = true;
+
+  loadingCards = false;
 
   sets: Set[] = [];
 
@@ -72,8 +74,7 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getSets();
-    await this.getCards();
-    this.loading = false;
+    this.loadingSets = false;
   }
 
   async getSets(): Promise<void> {
@@ -81,8 +82,8 @@ export class HomeComponent implements OnInit {
     this.sets = data.data;
   }
 
-  async getCards(): Promise<void> {
-    const data = await firstValueFrom(this.pokemon.getCards());
+  async getCards(id: string): Promise<void> {
+    const data = await firstValueFrom(this.pokemon.getCards(id));
     this.cards = data.data;
   }
 
@@ -101,5 +102,13 @@ export class HomeComponent implements OnInit {
   toggleFilter(clickedFilter: Filter): void {
     let filter = this.filters.filter((filter: Filter) => filter.id === clickedFilter.id)[0];
     filter.enabled = !filter.enabled;
+  }
+
+  async calculate(): Promise<void> {
+    if (this.selectedSet) {
+      this.loadingCards = true;
+      await this.getCards(this.selectedSet.id);
+      this.loadingCards = false;
+    }
   }
 }

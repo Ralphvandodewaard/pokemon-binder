@@ -19,8 +19,8 @@ export class PokemonService {
     .get<SetsDto>(`${this.baseUrl}/sets?q=series:"Sword %26 Shield"`);
   }
 
-  getCards(): Observable<CardsDto> {
+  getCards(id: string): Observable<CardsDto> {
     return this.http
-    .get<CardsDto>(`${this.baseUrl}/cards?q=set.id:swsh5`);
+    .get<CardsDto>(`${this.baseUrl}/cards?q=set.id:${id}`);
   }
 }
