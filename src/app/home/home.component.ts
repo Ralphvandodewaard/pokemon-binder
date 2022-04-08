@@ -90,7 +90,11 @@ export class HomeComponent implements OnInit {
   }
 
   async getCards(id: string): Promise<void> {
-    const data = await firstValueFrom(this.pokemon.getCards(id));
+    let data = await firstValueFrom(this.pokemon.getCards(id));
+    if (data.totalCount > 250) {
+      const dataRemaining = await firstValueFrom(this.pokemon.getCards(id, 2));
+      data.data = data.data.concat(dataRemaining.data);
+    }
     this.cards = data.data;
   }
 
