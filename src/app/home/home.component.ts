@@ -5,6 +5,7 @@ import { Card } from '../models/card';
 import { Set } from '../models/set';
 import { Size } from '../models/size';
 import { Filter } from '../models/filter';
+import constants from 'src/constants';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,8 @@ export class HomeComponent implements OnInit {
   sets: Set[] = [];
 
   cards: Card[] = [];
+
+  filteredCards: Card[] = [];
 
   sizes: Size[] = [
     {
@@ -56,7 +59,7 @@ export class HomeComponent implements OnInit {
     },
     {
       id: 4,
-      description: 'Exclude holo V rares'
+      description: 'Exclude special rares'
     },
     {
       id: 5,
@@ -110,17 +113,22 @@ export class HomeComponent implements OnInit {
 
   async calculate(): Promise<void> {
     if (this.selectedSet && this.selectedSize) {
-      if (
+      if (this.filters.slice(2, 6).some((filter: Filter) => !filter.enabled)) {
+        if (
           this.cards.length === 0 ||
           (this.cards.length > 0 && this.cards[0].set.id !== this.selectedSet.id)
         ) {
-        this.loadingCards = true;
-        await this.getCards(this.selectedSet.id);
+          this.loadingCards = true;
+          await this.getCards(this.selectedSet.id);
+        }
+        this.filterCards();
         this.loadingCards = false;
+        this.showBinder = true;
+        this.errorMessage = '';
+        this.scrollToTop();
+      } else {
+        this.errorMessage = 'Cannot exclude all card rarities';
       }
-      this.showBinder = true;
-      this.errorMessage = '';
-      this.scrollToTop();
     } else {
       if (!this.selectedSet) {
         this.errorMessage = 'Please select a set';
@@ -128,6 +136,44 @@ export class HomeComponent implements OnInit {
         this.errorMessage = 'Please select a binder page size';
       }
     }
+  }
+
+  filterCards(): void {
+    this.filteredCards = this.cards;
+    this.filters.forEach((filter: Filter) => {
+      if (filter.enabled) {
+        switch (filter.id) {
+          case 3:
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.COMMON &&
+              card.rarity.toLowerCase() !== constants.RARITIES.UNCOMMON &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO
+            );
+            break;
+          case 4:
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_V &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_VMAX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_VSTAR
+            );
+            break;
+          case 5:
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_ULTRA
+            );
+            break;
+          case 6:
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_SECRET &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_RAINBOW
+            );
+            break;
+          default:
+            break;
+        }
+      }
+    })
   }
 
   back(): void {
@@ -140,6 +186,6 @@ export class HomeComponent implements OnInit {
   }
 
   get pageAmount(): number {
-    return Math.ceil(this.cards.length / (this.selectedSize!.height * this.selectedSize!.width));
+    return Math.ceil(this.filteredCards.length / (this.selectedSize!.height * this.selectedSize!.width));
   }
 }

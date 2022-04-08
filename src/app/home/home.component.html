@@ -160,7 +160,7 @@
           Card amount:
         </p>
         <p>
-          {{ cards.length }}
+          {{ filteredCards.length }}
         </p>
       </div>
       <div class="grid grid-cols-settings gap-8">
@@ -179,7 +179,7 @@
     </p>
     <app-binder
       *ngIf="selectedSet && selectedSize && cards.length > 0"
-      [cards]="cards"
+      [cards]="filteredCards"
       [size]="selectedSize"
     ></app-binder>
   </div>
