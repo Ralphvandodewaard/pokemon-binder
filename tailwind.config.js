@@ -2,6 +2,11 @@ module.exports = {
   content: [
     './src/**/*.{html,js,ts}'
   ],
+  safelist: [
+    {
+      pattern: /grid-(cols|rows)-(2|3|4)/
+    }
+  ],
   theme: {
     extend: {
       colors: {

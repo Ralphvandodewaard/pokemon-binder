@@ -29,7 +29,7 @@
           [class]="selectedSet && set.id === selectedSet.id ? 'opacity-100' : 'opacity-0'"
           class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
         >
-          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@
           [class]="selectedSize && size.id === selectedSize.id ? 'opacity-100' : 'opacity-0'"
           class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
         >
-          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
         </div>
       </div>
     </div>
@@ -88,7 +88,7 @@
           class="flex items-center justify-center h-6 w-6 rounded-full cursor-pointer duration-100"
           (click)="toggleFilter(filter)"
         >
-          <img src="../assets/icons/checkmark.svg" alt="Checkmark" />
+          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
         </div>
       </div>
     </div>
@@ -103,7 +103,7 @@
       </p>
       <img
         *ngIf="loadingCards"
-        src="../assets/icons/spinner.svg"
+        src="assets/icons/spinner.svg"
         alt="Loading"
         class="h-6 animate-spin"
       />
