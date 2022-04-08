@@ -174,6 +174,7 @@ export class HomeComponent implements OnInit {
         }
       }
     })
+    this.filteredCards.sort((a: Card, b: Card) => Number(a.id.split('-')[1]) - Number(b.id.split('-')[1]));
   }
 
   back(): void {
