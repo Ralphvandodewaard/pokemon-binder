@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 400;
+  src: url("assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 600;
+  src: url("assets/fonts/Montserrat-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat";
+  font-weight: 700;
+  src: url("assets/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+@layer utilities {
+  .bg-header-outer {
+    background: linear-gradient(#3A549F 50%, #2B2D53 50%);
+  }
+
+  .bg-header-inner {
+    background: linear-gradient(#E01C2F 50%, #941D26 50%);
+  }
+}
