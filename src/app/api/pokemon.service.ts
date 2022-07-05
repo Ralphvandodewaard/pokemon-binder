@@ -1,26 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CardsDto } from '../models/cardsDto';
+import { Set } from '../models/set';
 import { SetsDto } from '../models/setsDto';
+import constants from '../shared/constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonService {
-  baseUrl = 'https://api.pokemontcg.io/v2';
-
   constructor(
     private http: HttpClient
   ) { }
 
-  getSets(): Observable<SetsDto> {
+  getSets(): Observable<Set[]> {
     return this.http
-    .get<SetsDto>(`${this.baseUrl}/sets?q=series:"Sword %26 Shield"`);
+    .get<SetsDto>(`${constants.API_URL}/sets`)
+    .pipe(
+      map((data: SetsDto) => data.data)
+    );
   }
 
   getCards(id: string, page: number = 1): Observable<CardsDto> {
     return this.http
-    .get<CardsDto>(`${this.baseUrl}/cards?q=set.id:${id}&page=${page}`);
+    .get<CardsDto>(`${constants.API_URL}/cards?q=set.id:${id}&page=${page}`);
   }
 }

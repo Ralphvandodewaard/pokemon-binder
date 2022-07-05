@@ -1,4 +1,6 @@
 export default {
+  API_URL: 'https://api.pokemontcg.io/v2',
+  IMAGES_URL: 'https://images.pokemontcg.io',
   RARITIES: {
     COMMON: 'common',
     UNCOMMON: 'uncommon',

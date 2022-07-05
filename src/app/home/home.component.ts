@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
-import { Card } from '../models/card';
-import { Set } from '../models/set';
-import { Size } from '../models/size';
-import { Filter } from '../models/filter';
-import constants from 'src/constants';
+import { Card, Filter, Series, Set, Size } from '../models';
+import constants from '../shared/constants';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +16,8 @@ export class HomeComponent implements OnInit {
   showBinder = false;
 
   errorMessage = '';
+
+  series: Series[] = [];
 
   sets: Set[] = [];
 
@@ -81,12 +80,31 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.getSets();
+    this.getSeries();
     this.loadingSets = false;
   }
 
   async getSets(): Promise<void> {
     const data = await firstValueFrom(this.pokemon.getSets());
-    this.sets = data.data;
+    this.sets = data;
+  }
+
+  getSeries(): void {
+    this.sets.forEach((set: Set) => {
+      if (
+        set.id.includes('1') &&
+        set.series.toLowerCase() !== 'other' &&
+        set.series.toLowerCase() !== 'pop' &&
+        this.series.filter((series: Series) => series.name === set.series).length === 0
+      ) {
+        const payload = {
+          logo: set.images.logo,
+          name: set.series,
+          releaseDate: set.releaseDate
+        }
+        this.series.push(payload);
+      }
+    })
   }
 
   async getCards(id: string): Promise<void> {
