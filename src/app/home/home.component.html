@@ -1,4 +1,29 @@
 <div
+  [ngClass]="presets.length < 5 ? 'justify-center' : ''"
+  class="grid grid-cols-2 mobile:flex mobile:flex-wrap gap-2 mobile:gap-4 w-full max-w-5xl"
+>
+  <a routerLink="/new/series">
+    <app-button
+      label="New binder"
+      [binderImage]="{
+        width: 3,
+        height: 3,
+        hasPlus: true
+      }"
+    ></app-button>
+  </a>
+  <app-button
+    *ngIf="presets.length == 0"
+    label="Load preset"
+    [image]="{
+      src: 'https://images.pokemontcg.io/base1/logo.png',
+      alt: 'Base'
+    }"
+    [isDisabled]="true"
+  ></app-button>
+</div>
+
+<!-- <div
   *ngIf="!showBinder && !loadingSets"
   class="flex flex-col gap-8"
 >
@@ -183,4 +208,4 @@
       [size]="selectedSize"
     ></app-binder>
   </div>
-</div>
+</div> -->

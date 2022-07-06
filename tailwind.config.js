@@ -24,6 +24,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         settings: '112px, minmax(0, 1fr)'
+      },
+      screens: {
+        'mobile': '480px',
       }
     }
   },

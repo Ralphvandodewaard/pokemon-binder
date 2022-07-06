@@ -1,11 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { SeriesComponent } from './steps/series/series.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'new',
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'series'
+      },
+      {
+        path: 'series',
+        component: SeriesComponent
+      }
+    ]
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 

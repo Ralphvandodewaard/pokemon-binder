@@ -1,0 +1,26 @@
+<button
+  [ngClass]="isDisabled ? 'bg-gray-100 cursor-default' : 'bg-white hover:border-primary duration-100'"
+  class="flex flex-col items-center gap-2 px-2 mobile:px-4 py-4 w-full mobile:w-44 border-2 border-transparent rounded-lg shadow"
+>
+  <div class="flex items-center h-20">
+    <img
+      *ngIf="image"
+      [src]="image.src"
+      [alt]="image.alt"
+      [ngClass]="isDisabled ? 'grayscale' : ''"
+      class="max-w-full max-h-full"
+    />
+    <app-binder-image
+      *ngIf="binderImage"
+      [binderImage]="binderImage"
+    ></app-binder-image>
+  </div>
+  <div class="flex items-center h-12">
+    <p
+      [ngClass]="isDisabled ? 'text-gray-400' : ''"
+      class="text-center"
+    >
+      {{ label }}
+    </p>
+  </div>
+</button>

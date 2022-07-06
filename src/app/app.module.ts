@@ -7,13 +7,19 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { BinderComponent } from './home/binder/binder.component';
 import { HeaderComponent } from './shared/header/header.component';
+import { SeriesComponent } from './steps/series/series.component';
+import { ButtonComponent } from './shared/button/button.component';
+import { BinderImageComponent } from './shared/binder-image/binder-image.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BinderComponent,
-    HeaderComponent
+    HeaderComponent,
+    SeriesComponent,
+    ButtonComponent,
+    BinderImageComponent
   ],
   imports: [
     BrowserModule,
