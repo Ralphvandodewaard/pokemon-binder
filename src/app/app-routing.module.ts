@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { BinderComponent } from './steps/binder/binder.component';
 import { SeriesComponent } from './steps/series/series.component';
 import { SetComponent } from './steps/set/set.component';
 
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'set',
         component: SetComponent
+      },
+      {
+        path: 'binder',
+        component: BinderComponent
       }
     ]
   },

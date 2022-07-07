@@ -21,7 +21,7 @@ export class SeriesComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
-    this.sets = await this.store.getSets();
+    this.sets = await this.store.getAllSets();
     this.series = this.store.getSeries();
     this.isLoading = false;
   }

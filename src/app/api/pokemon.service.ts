@@ -12,7 +12,7 @@ export class PokemonService {
     private http: HttpClient
   ) { }
 
-  getSets(): Observable<Set[]> {
+  getAllSets(): Observable<Set[]> {
     return this.http
     .get<SetsDto>(`${constants.API_URL}/sets`)
     .pipe(

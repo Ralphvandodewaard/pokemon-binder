@@ -7,24 +7,37 @@ import { Series, Set } from '../models';
   providedIn: 'root'
 })
 export class StoreService {
-  sets: Set[] = [];
+  allSets: Set[] = [];
 
   series: Series[] = [];
 
   selectedSeries: string | null = null;
 
+  setsInSeries: Set[] = [];
+
+  selectedSet: Set | null = null;
+
   constructor(
     private pokemon: PokemonService
   ) { }
 
-  async getSets(): Promise<Set[]> {
-    if (this.sets.length > 0) {
-      return this.sets;
+  async getAllSets(): Promise<Set[]> {
+    if (this.allSets.length > 0) {
+      return this.allSets;
     }
 
-    const data = await firstValueFrom(this.pokemon.getSets());
-    this.sets = data;
-    return this.sets;
+    const data = await firstValueFrom(this.pokemon.getAllSets());
+    this.allSets = data;
+    return this.allSets;
+  }
+
+  async getSetsInSeries(): Promise<Set[]> {
+    if (this.setsInSeries.length > 0 && this.setsInSeries[0].series === this.selectedSeries) {
+      return this.setsInSeries;
+    }
+
+    this.setsInSeries = this.allSets.filter((set: Set) => set.series === this.selectedSeries);
+    return this.setsInSeries;
   }
 
   getSeries(): Series[] {
@@ -32,7 +45,7 @@ export class StoreService {
       return this.series;
     }
 
-    this.sets.forEach((set: Set) => {
+    this.allSets.forEach((set: Set) => {
       if (
         set.id.includes('1') &&
         set.series.toLowerCase() !== 'other' &&

@@ -1,6 +1,4 @@
-<div *ngIf="isLoading">
-  Loading..
-</div>
+<app-loading *ngIf="isLoading"></app-loading>
 <div
   *ngIf="!isLoading"
   [ngClass]="presets.length < 5 ? 'justify-center' : ''"
