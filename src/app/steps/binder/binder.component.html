@@ -1,1 +1,11 @@
-<p>binder works!</p>
+<app-step-wrapper label="03. Select binder page size">
+  <app-button
+    *ngFor="let size of sizes"
+    [label]="getSizeLabel(size)"
+    [binderImage]="{
+      width: size.width,
+      height: size.height
+    }"
+    (click)="navigateToRarities(size)"
+  ></app-button>
+</app-step-wrapper>

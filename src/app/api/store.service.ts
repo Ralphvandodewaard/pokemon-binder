@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
-import { Series, Set } from '../models';
+import { Series, Set, Size } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,8 @@ export class StoreService {
   setsInSeries: Set[] = [];
 
   selectedSet: Set | null = null;
+
+  selectedSize: Size | null = null;
 
   constructor(
     private pokemon: PokemonService

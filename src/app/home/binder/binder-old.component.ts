@@ -3,10 +3,10 @@ import { Card } from 'src/app/models/card';
 import { Size } from 'src/app/models/size';
 
 @Component({
-  selector: 'app-binder',
-  templateUrl: './binder.component.html'
+  selector: 'app-binder-old',
+  templateUrl: './binder-old.component.html'
 })
-export class BinderComponent implements OnInit {
+export class BinderOldComponent implements OnInit {
   @Input() cards!: Card[];
 
   @Input() size!: Size;
