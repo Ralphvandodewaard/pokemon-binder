@@ -17,14 +17,14 @@ export class SetComponent implements OnInit {
     private router: Router
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
     if (!this.store.selectedSeries) {
       this.router.navigate(['/new']);
       return;
     }
 
     this.isLoading = true;
-    this.sets = await this.store.getSetsInSeries();
+    this.sets = this.store.getSetsInSeries();
     this.isLoading = false;
   }
 

@@ -31,7 +31,7 @@ export class StoreService {
     return this.allSets;
   }
 
-  async getSetsInSeries(): Promise<Set[]> {
+  getSetsInSeries(): Set[] {
     if (this.setsInSeries.length > 0 && this.setsInSeries[0].series === this.selectedSeries) {
       return this.setsInSeries;
     }
