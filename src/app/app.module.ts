@@ -10,6 +10,7 @@ import { HeaderComponent } from './shared/header/header.component';
 import { SeriesComponent } from './steps/series/series.component';
 import { ButtonComponent } from './shared/button/button.component';
 import { BinderImageComponent } from './shared/binder-image/binder-image.component';
+import { SetComponent } from './steps/set/set.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { BinderImageComponent } from './shared/binder-image/binder-image.compone
     HeaderComponent,
     SeriesComponent,
     ButtonComponent,
-    BinderImageComponent
+    BinderImageComponent,
+    SetComponent
   ],
   imports: [
     BrowserModule,

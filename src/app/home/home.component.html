@@ -1,8 +1,12 @@
+<div *ngIf="isLoading">
+  Loading..
+</div>
 <div
+  *ngIf="!isLoading"
   [ngClass]="presets.length < 5 ? 'justify-center' : ''"
   class="grid grid-cols-2 mobile:flex mobile:flex-wrap gap-2 mobile:gap-4 w-full max-w-5xl"
 >
-  <a routerLink="/new/series">
+  <a routerLink="/new">
     <app-button
       label="New binder"
       [binderImage]="{

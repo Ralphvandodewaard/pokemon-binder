@@ -1,1 +1,30 @@
-<p>series works!</p>
+<div *ngIf="isLoading">
+  Loading..
+</div>
+<div
+  *ngIf="!isLoading"
+  class="flex flex-col gap-4"
+>
+  <h2 class="text-2xl text-primary font-semibold">
+    01. Select series
+  </h2>
+  <div class="grid grid-cols-2 mobile:flex mobile:flex-wrap gap-2 mobile:gap-4 w-full max-w-5xl">
+    <app-button
+      *ngFor="let series of series"
+      [label]="series.name"
+      [image]="{
+        src: series.logo,
+        alt: series.name
+      }"
+      (click)="navigateToSet(series.name)"
+    ></app-button>
+    <app-button
+      label="Other"
+      [image]="{
+        src: 'https://images.pokemontcg.io/base1/logo.png',
+        alt: 'Base'
+      }"
+      (click)="navigateToSet('Other')"
+    ></app-button>
+  </div>
+</div>

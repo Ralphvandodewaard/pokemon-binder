@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { CardsDto } from '../models/cardsDto';
-import { Set } from '../models/set';
-import { SetsDto } from '../models/setsDto';
+import { CardsDto, Set, SetsDto } from '../models';
 import constants from '../shared/constants';
 
 @Injectable({
@@ -26,4 +24,5 @@ export class PokemonService {
     return this.http
     .get<CardsDto>(`${constants.API_URL}/cards?q=set.id:${id}&page=${page}`);
   }
+
 }

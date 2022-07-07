@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-// import { PokemonService } from '../api/pokemon.service';
-// import { firstValueFrom } from 'rxjs';
-// import { Card, Filter, Series, Set, Size } from '../models';
+import { StoreService } from '../api/store.service';
+import { Series, Set } from '../models';
 // import constants from '../shared/constants';
 
 @Component({
@@ -10,11 +9,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  isLoading = false;
+
   presets: any[] = [];
 
-  constructor() { }
+  sets: Set[] = [];
 
-  ngOnInit(): void {
+  series: Series[] = [];
+
+  constructor(
+    private store: StoreService
+  ) { }
+
+  async ngOnInit(): Promise<void> {
+    this.isLoading = true;
+    this.sets = await this.store.getSets();
+    this.series = this.store.getSeries();
+    this.isLoading = false;
   }
 
   // loadingSets = true;
