@@ -1,20 +1,15 @@
 <app-loading *ngIf="isLoading"></app-loading>
-<div
+<app-step-wrapper
   *ngIf="!isLoading"
-  class="flex flex-col gap-4"
+  label="02. Select set"
 >
-  <h2 class="text-2xl text-primary font-semibold">
-    02. Select set
-  </h2>
-  <div class="grid grid-cols-2 mobile:flex mobile:flex-wrap gap-2 mobile:gap-4 w-full max-w-5xl">
-    <app-button
-      *ngFor="let set of sets"
-      [label]="set.name"
-      [image]="{
-        src: set.images.logo,
-        alt: set.name
-      }"
-      (click)="navigateToBinder(set)"
-    ></app-button>
-  </div>
-</div>
+  <app-button
+    *ngFor="let set of sets"
+    [label]="set.name"
+    [image]="{
+      src: set.images.logo,
+      alt: set.name
+    }"
+    (click)="navigateToBinder(set)"
+  ></app-button>
+</app-step-wrapper>

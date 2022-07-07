@@ -1,8 +1,7 @@
 <app-loading *ngIf="isLoading"></app-loading>
-<div
+<app-step-wrapper
+  [ngClass]="presets.length < 5 ? 'flex justify-center' : ''"
   *ngIf="!isLoading"
-  [ngClass]="presets.length < 5 ? 'justify-center' : ''"
-  class="grid grid-cols-2 mobile:flex mobile:flex-wrap gap-2 mobile:gap-4 w-full max-w-5xl"
 >
   <a routerLink="/new">
     <app-button
@@ -23,7 +22,7 @@
     }"
     [isDisabled]="true"
   ></app-button>
-</div>
+</app-step-wrapper>
 
 <!-- <div
   *ngIf="!showBinder && !loadingSets"

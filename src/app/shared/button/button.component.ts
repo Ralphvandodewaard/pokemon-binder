@@ -5,7 +5,7 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './button.component.html'
 })
 export class ButtonComponent implements OnInit {
-  @Input() label: string = '';
+  @Input() label = '';
 
   @Input() image?: {
     src: string,

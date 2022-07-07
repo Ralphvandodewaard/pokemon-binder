@@ -12,6 +12,7 @@ import { ButtonComponent } from './shared/button/button.component';
 import { BinderImageComponent } from './shared/binder-image/binder-image.component';
 import { SetComponent } from './steps/set/set.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { StepWrapperComponent } from './shared/step-wrapper/step-wrapper.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { LoadingComponent } from './shared/loading/loading.component';
     ButtonComponent,
     BinderImageComponent,
     SetComponent,
-    LoadingComponent
+    LoadingComponent,
+    StepWrapperComponent
   ],
   imports: [
     BrowserModule,
