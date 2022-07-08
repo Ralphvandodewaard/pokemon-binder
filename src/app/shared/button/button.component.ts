@@ -16,6 +16,7 @@ export class ButtonComponent implements OnInit {
     width: number,
     height: number,
     hasPlus?: boolean,
+    isCollection?: boolean
   }
 
   @Input() isDisabled: boolean = false;

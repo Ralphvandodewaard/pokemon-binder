@@ -13,8 +13,9 @@ import { BinderImageComponent } from './shared/binder-image/binder-image.compone
 import { SetComponent } from './steps/set/set.component';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { StepWrapperComponent } from './shared/step-wrapper/step-wrapper.component';
-import { BinderComponent } from './steps/binder/binder.component';
-import { RaritiesComponent } from './steps/rarities/rarities.component';
+import { SizeComponent } from './steps/size/size.component';
+import { StyleComponent } from './steps/style/style.component';
+import { CardComponent } from './shared/binder-image/card/card.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { RaritiesComponent } from './steps/rarities/rarities.component';
     SetComponent,
     LoadingComponent,
     StepWrapperComponent,
-    BinderComponent,
-    RaritiesComponent
+    SizeComponent,
+    StyleComponent,
+    CardComponent
   ],
   imports: [
     BrowserModule,

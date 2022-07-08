@@ -4,10 +4,10 @@ import { StoreService } from 'src/app/api/store.service';
 import { Size } from 'src/app/models';
 
 @Component({
-  selector: 'app-binder',
-  templateUrl: './binder.component.html'
+  selector: 'app-size',
+  templateUrl: './size.component.html'
 })
-export class BinderComponent implements OnInit {
+export class SizeComponent implements OnInit {
   sizes: Size[] = [
     { width: 2, height: 2 },
     { width: 3, height: 3 },
@@ -32,7 +32,7 @@ export class BinderComponent implements OnInit {
 
   navigateToRarities(size: Size): void {
     this.store.selectedSize = size;
-    this.router.navigate(['/new/rarities']);
+    this.router.navigate(['/new/style']);
   }
 
 }

@@ -19,6 +19,8 @@ export class StoreService {
 
   selectedSize: Size | null = null;
 
+  selectedStyle: string | null = null;
+
   constructor(
     private pokemon: PokemonService
   ) { }

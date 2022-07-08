@@ -30,7 +30,7 @@ export class SetComponent implements OnInit {
 
   navigateToBinder(set: Set): void {
     this.store.selectedSet = set;
-    this.router.navigate(['/new/binder']);
+    this.router.navigate(['/new/size']);
   }
 
 }

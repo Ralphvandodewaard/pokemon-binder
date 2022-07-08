@@ -9,6 +9,7 @@ export class BinderImageComponent implements OnInit {
     width: number,
     height: number,
     hasPlus?: boolean
+    isCollection?: boolean
   }
 
   constructor() { }

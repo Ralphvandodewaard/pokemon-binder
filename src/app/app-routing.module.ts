@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-import { BinderComponent } from './steps/binder/binder.component';
-import { RaritiesComponent } from './steps/rarities/rarities.component';
+import { SizeComponent } from './steps/size/size.component';
 import { SeriesComponent } from './steps/series/series.component';
 import { SetComponent } from './steps/set/set.component';
+import { StyleComponent } from './steps/style/style.component';
 
 const routes: Routes = [
   {
@@ -28,12 +28,12 @@ const routes: Routes = [
         component: SetComponent
       },
       {
-        path: 'binder',
-        component: BinderComponent
+        path: 'size',
+        component: SizeComponent
       },
       {
-        path: 'rarities',
-        component: RaritiesComponent
+        path: 'style',
+        component: StyleComponent
       }
     ]
   },
