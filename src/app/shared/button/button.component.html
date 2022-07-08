@@ -1,26 +1,40 @@
-<button
-  [ngClass]="isDisabled ? 'bg-gray-100 cursor-default' : 'bg-white hover:border-primary duration-100'"
-  class="flex flex-col items-center gap-2 px-2 mobile:px-4 py-4 w-full mobile:w-44 border-2 border-transparent rounded-lg shadow"
+<div
+  class="relative"
+  (mouseleave)="toggleDeleteButton(false)"
 >
-  <div class="flex items-center h-20">
-    <img
-      *ngIf="image"
-      [src]="image.src"
-      [alt]="image.alt"
-      [ngClass]="isDisabled ? 'grayscale' : ''"
-      class="max-w-full max-h-full"
-    />
-    <app-binder-image
-      *ngIf="binderImage"
-      [binderImage]="binderImage"
-    ></app-binder-image>
-  </div>
-  <div class="flex items-center h-12">
-    <p
-      [ngClass]="isDisabled ? 'text-gray-400' : ''"
-      class="text-center"
-    >
-      {{ label }}
-    </p>
-  </div>
-</button>
+  <button
+    [ngClass]="isDisabled ? 'bg-gray-100 cursor-default' : 'bg-white hover:border-primary duration-100'"
+    class="flex flex-col items-center gap-2 px-2 mobile:px-4 py-4 w-full mobile:w-44 border-2 border-transparent rounded-lg shadow"
+    (mouseenter)="toggleDeleteButton(true)"
+  >
+    <div class="flex items-center h-20">
+      <img
+        *ngIf="image"
+        [src]="image.src"
+        [alt]="image.alt"
+        [ngClass]="isDisabled ? 'grayscale' : ''"
+        class="max-w-full max-h-full"
+      />
+      <app-binder-image
+        *ngIf="binderImage"
+        [binderImage]="binderImage"
+      ></app-binder-image>
+    </div>
+    <div class="flex items-center h-12">
+      <p
+        [ngClass]="isDisabled ? 'text-gray-400' : ''"
+        class="text-center"
+      >
+        {{ label }}
+      </p>
+    </div>
+  </button>
+  <button
+    *ngIf="isDeletable"
+    [ngClass]="deleteButtonVisible ? 'opacity-100' : 'opacity-100 sm::opacity-0 sm:cursor-default sm:-z-10'"
+    class="absolute flex justify-center items-center -top-1 -right-1 w-6 h-6 rounded-full bg-red border-2 border-transparent hover:border-primary duration-100 outline-none"
+    (click)="emitDelete()"
+  >
+    <img src="assets/icons/delete.svg" alt="Delete" />
+  </button>
+</div>

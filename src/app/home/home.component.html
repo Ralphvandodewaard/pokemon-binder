@@ -20,6 +20,8 @@
       src: preset.set.logo,
       alt: preset.set.name
     }"
+    [isDeletable]="true"
+    (delete)="deletePreset(i)"
   ></app-button>
   <app-button
     *ngIf="presets.length == 0"

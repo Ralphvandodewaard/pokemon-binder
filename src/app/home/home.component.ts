@@ -29,7 +29,13 @@ export class HomeComponent implements OnInit {
 
     this.sets = await this.store.getAllSets();
     this.series = this.store.getSeries();
+
     this.isLoading = false;
+  }
+
+  deletePreset(index: number): void {
+    this.presets.splice(index, 1);
+    localStorage.setItem('presets', JSON.stringify(this.presets));
   }
 
   // loadingSets = true;
