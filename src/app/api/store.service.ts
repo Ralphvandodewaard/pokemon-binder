@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
-import { Series, Set, Size } from '../models';
+import { Series, Set, Size, Style } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class StoreService {
 
   series: Series[] = [];
 
-  selectedSeries: string | null = null;
+  selectedSeries: Series | null = null;
 
   setsInSeries: Set[] = [];
 
@@ -19,7 +19,7 @@ export class StoreService {
 
   selectedSize: Size | null = null;
 
-  selectedStyle: string | null = null;
+  selectedStyle: Style | null = null;
 
   constructor(
     private pokemon: PokemonService
@@ -36,11 +36,11 @@ export class StoreService {
   }
 
   getSetsInSeries(): Set[] {
-    if (this.setsInSeries.length > 0 && this.setsInSeries[0].series === this.selectedSeries) {
+    if (this.setsInSeries.length > 0 && this.setsInSeries[0].series === this.selectedSeries!.name) {
       return this.setsInSeries;
     }
 
-    this.setsInSeries = this.allSets.filter((set: Set) => set.series === this.selectedSeries);
+    this.setsInSeries = this.allSets.filter((set: Set) => set.series === this.selectedSeries!.name);
     return this.setsInSeries;
   }
 

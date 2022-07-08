@@ -1,18 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from 'src/app/api/store.service';
-import { Size } from 'src/app/models';
+import { Size, Style } from 'src/app/models';
 
 @Component({
   selector: 'app-style',
   templateUrl: './style.component.html'
 })
 export class StyleComponent implements OnInit {
-  styles: {
-    label: string,
-    isCollection: boolean,
-    description: string
-  }[] = [
+  styles: Style[] = [
     {
       label: 'Collection',
       isCollection: true,
@@ -24,10 +20,8 @@ export class StyleComponent implements OnInit {
       description: 'All cards in this binder will be displayed as if they were collected.'
     }
   ]
-  selectedSize: Size = {
-    width: 3,
-    height: 3
-  };
+
+  selectedSize: Size | null = null;
 
   constructor(
     private store: StoreService,
@@ -43,7 +37,7 @@ export class StyleComponent implements OnInit {
     this.selectedSize = this.store.selectedSize;
   }
 
-  navigateToOverview(style: string): void {
+  navigateToOverview(style: Style): void {
     this.store.selectedStyle = style;
     this.router.navigate(['/new/overview']);
   }

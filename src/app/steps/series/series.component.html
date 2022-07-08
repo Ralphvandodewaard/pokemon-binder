@@ -10,7 +10,7 @@
       src: series.logo,
       alt: series.name
     }"
-    (click)="navigateToSet(series.name)"
+    (click)="navigateToSet(series)"
   ></app-button>
   <app-button
     label="Other"
@@ -18,6 +18,6 @@
       src: 'https://images.pokemontcg.io/base1/logo.png',
       alt: 'Base'
     }"
-    (click)="navigateToSet('Other')"
+    (click)="navigateToSet({ name: 'Other', logo: 'https://images.pokemontcg.io/base1/logo.png'})"
   ></app-button>
 </app-step-wrapper>

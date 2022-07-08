@@ -26,7 +26,7 @@ export class SeriesComponent implements OnInit {
     this.isLoading = false;
   }
 
-  navigateToSet(series: string): void {
+  navigateToSet(series: Series): void {
     this.store.selectedSeries = series;
     this.router.navigate(['/new/set']);
   }

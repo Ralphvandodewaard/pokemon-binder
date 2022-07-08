@@ -1,5 +1,8 @@
 <div class="flex flex-col gap-8">
-  <app-step-wrapper label="04. Select binder style">
+  <app-step-wrapper
+    *ngIf="selectedSize"
+    label="04. Select binder style"
+  >
     <app-button
       *ngFor="let style of styles"
       [label]="style.label"
@@ -8,7 +11,7 @@
         height: selectedSize.height,
         isCollection: style.isCollection
       }"
-      (click)="navigateToOverview(style.label)"
+      (click)="navigateToOverview(style)"
     ></app-button>
   </app-step-wrapper>
   <div class="flex flex-col gap-2 text-sm">
@@ -18,7 +21,7 @@
       </p>
     </div>
     <p *ngFor="let style of styles">
-      <span class="font-semibold italic">
+      <span class="font-bold italic">
         {{ style.label }}
       </span>:
       {{ style.description }}

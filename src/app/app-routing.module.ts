@@ -5,6 +5,7 @@ import { SizeComponent } from './steps/size/size.component';
 import { SeriesComponent } from './steps/series/series.component';
 import { SetComponent } from './steps/set/set.component';
 import { StyleComponent } from './steps/style/style.component';
+import { OverviewComponent } from './steps/overview/overview.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,11 @@ const routes: Routes = [
       {
         path: 'style',
         component: StyleComponent
-      }
+      },
+      {
+        path: 'overview',
+        component: OverviewComponent
+      },
     ]
   },
   {

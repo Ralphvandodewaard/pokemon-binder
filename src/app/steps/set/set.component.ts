@@ -28,7 +28,7 @@ export class SetComponent implements OnInit {
     this.isLoading = false;
   }
 
-  navigateToBinder(set: Set): void {
+  navigateToSize(set: Set): void {
     this.store.selectedSet = set;
     this.router.navigate(['/new/size']);
   }

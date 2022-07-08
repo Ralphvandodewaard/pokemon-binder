@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-8">
+  <app-step-wrapper
+    *ngIf="selectedSeries && selectedSet && selectedSize && selectedStyle"
+    label="05. Overview"
+  >
+    <app-button
+      [label]="selectedSeries.name"
+      [image]="{
+        src: selectedSeries.logo,
+        alt: selectedSeries.name
+      }"
+      (click)="navigateBack('series')"
+    ></app-button>
+    <app-button
+      [label]="selectedSet.name"
+      [image]="{
+        src: selectedSet.images.logo,
+        alt: selectedSet.name
+      }"
+      (click)="navigateBack('set')"
+    ></app-button>
+    <app-button
+      [label]="sizeLabel"
+      [binderImage]="{
+        width: selectedSize.width,
+        height: selectedSize.height
+      }"
+      (click)="navigateBack('size')"
+    ></app-button>
+    <app-button
+      [label]="selectedStyle.label"
+      [binderImage]="{
+        width: selectedSize.width,
+        height: selectedSize.height,
+        isCollection: selectedStyle.isCollection
+      }"
+      (click)="navigateBack('style')"
+    ></app-button>
+  </app-step-wrapper>
+  <div class="flex flex-col mobile:flex-row gap-4">
+    <button
+      class="order-2 mobile:order-1 flex justify-center mobile:w-44 px-6 py-4 bg-primary text-white font-bold border border-primary rounded-full duration-100"
+      (click)="createBinder()"
+    >
+      <p *ngIf="!isLoading">
+        Create binder
+      </p>
+      <p *ngIf="isLoading">
+        Loading..
+      </p>
+    </button>
+    <button
+      class="order-1 mobile:order-2 flex items-center gap-4 px-6 py-4 mobile:w-max bg-white border border-gray-200 rounded-full"
+      (click)="toggleSaveAsPreset()"
+    >
+      <div
+        [ngClass]="saveAsPreset ? 'bg-green' : 'bg-gray-200'"
+        class="flex items-center justify-center h-6 w-6 rounded-full"
+      >
+        <img src="assets/icons/checkmark.svg" alt="Checkmark" />
+      </div>
+      <p>
+        Save as preset
+      </p>
+    </button>
+  </div>
+</div>

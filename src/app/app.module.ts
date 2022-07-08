@@ -16,6 +16,7 @@ import { StepWrapperComponent } from './shared/step-wrapper/step-wrapper.compone
 import { SizeComponent } from './steps/size/size.component';
 import { StyleComponent } from './steps/style/style.component';
 import { CardComponent } from './shared/binder-image/card/card.component';
+import { OverviewComponent } from './steps/overview/overview.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CardComponent } from './shared/binder-image/card/card.component';
     StepWrapperComponent,
     SizeComponent,
     StyleComponent,
-    CardComponent
+    CardComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule,
