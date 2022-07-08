@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StoreService } from '../api/store.service';
-import { Series, Set } from '../models';
+import { Preset, Series, Set } from '../models';
 // import constants from '../shared/constants';
 
 @Component({
@@ -10,7 +10,7 @@ import { Series, Set } from '../models';
 export class HomeComponent implements OnInit {
   isLoading = false;
 
-  presets: any[] = [];
+  presets: Preset[] = [];
 
   sets: Set[] = [];
 
@@ -22,6 +22,11 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
+
+    if (localStorage.getItem('presets')) {
+      this.presets = JSON.parse(localStorage.getItem('presets')!);
+    }
+
     this.sets = await this.store.getAllSets();
     this.series = this.store.getSeries();
     this.isLoading = false;

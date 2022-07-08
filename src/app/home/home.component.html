@@ -1,7 +1,7 @@
 <app-loading *ngIf="isLoading"></app-loading>
 <app-step-wrapper
-  [ngClass]="presets.length < 5 ? 'flex justify-center' : ''"
   *ngIf="!isLoading"
+  [ngClass]="presets.length < 5 ? 'flex justify-center' : ''"
 >
   <a routerLink="/new">
     <app-button
@@ -14,6 +14,14 @@
     ></app-button>
   </a>
   <app-button
+    *ngFor="let preset of presets; index as i"
+    label="Load preset"
+    [image]="{
+      src: preset.set.logo,
+      alt: preset.set.name
+    }"
+  ></app-button>
+  <app-button
     *ngIf="presets.length == 0"
     label="Load preset"
     [image]="{
@@ -23,190 +31,3 @@
     [isDisabled]="true"
   ></app-button>
 </app-step-wrapper>
-
-<!-- <div
-  *ngIf="!showBinder && !loadingSets"
-  class="flex flex-col gap-8"
->
-  <div class="flex flex-col gap-4">
-    <p class="text-2xl font-bold">
-      Select set
-    </p>
-    <div class="flex gap-2 flex-wrap">
-      <div
-        *ngFor="let set of sets"
-        [class]="selectedSet && set.id === selectedSet.id ? 'border-secondary' : 'border-transparent hover:border-secondary'"
-        class="relative flex flex-col items-center gap-2 w-44 p-4 bg-white border-2 rounded-lg shadow cursor-pointer duration-100"
-        (click)="selectSet(set)"
-      >
-        <div class="flex items-center h-20">
-          <img
-            [src]="set.images.logo"
-            [alt]="set.name"
-            class="max-w-full max-h-full"
-          />
-        </div>
-        <div class="flex items-center h-12">
-          <p class="text-center">
-            {{ set.name }}
-          </p>
-        </div>
-        <div
-          [class]="selectedSet && set.id === selectedSet.id ? 'opacity-100' : 'opacity-0'"
-          class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
-        >
-          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex flex-col gap-4">
-    <p class="text-2xl font-bold">
-      Select binder page size
-    </p>
-    <div class="flex gap-2 flex-wrap">
-      <div
-        *ngFor="let size of sizes"
-        [class]="selectedSize && size.id === selectedSize.id ? 'border-secondary' : 'border-transparent hover:border-secondary'"
-        class="relative flex flex-col items-center gap-2 w-44 p-4 bg-white border-2 rounded-lg shadow cursor-pointer duration-100"
-        (click)="selectSize(size)"
-      >
-        <div class="flex items-center h-20">
-          <div
-            *ngFor="let el of [].constructor(2)"
-            [class]="gridClasses(size)"
-            class="grid gap-1 p-1 border border-gray-400"
-          >
-            <div
-              *ngFor="let el of [].constructor(size.height * size.width)"
-              class="h-4 w-3 bg-gray-800 rounded-sm"
-            ></div>
-          </div>
-        </div>
-        <div class="flex items-center h-12">
-          <p class="text-center">
-            {{ size.height }}x{{ size.width }}
-          </p>
-        </div>
-        <div
-          [class]="selectedSize && size.id === selectedSize.id ? 'opacity-100' : 'opacity-0'"
-          class="absolute top-2 right-2 flex items-center justify-center h-6 w-6 bg-secondary rounded-full duration-100"
-        >
-          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex flex-col items-start gap-4">
-    <p class="text-2xl font-bold">
-      Select filters
-    </p>
-    <div class="flex flex-col gap-4">
-      <div
-        *ngFor="let filter of filters"
-        class="grid grid-cols-2 gap-8"
-      >
-        <p>
-          {{ filter.description }}
-        </p>
-        <div
-          [class]="filter.enabled ? 'bg-secondary' : 'bg-disabled hover:bg-secondary'"
-          class="flex items-center justify-center h-6 w-6 rounded-full cursor-pointer duration-100"
-          (click)="toggleFilter(filter)"
-        >
-          <img src="assets/icons/checkmark.svg" alt="Checkmark" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="flex flex-col gap-2">
-    <button
-      class="flex justify-center w-32 py-4 bg-secondary hover:bg-opacity-90 text-white font-bold rounded-full duration-100"
-      (click)="calculate()"
-    >
-      <p *ngIf="!loadingCards">
-        Calculate
-      </p>
-      <img
-        *ngIf="loadingCards"
-        src="assets/icons/spinner.svg"
-        alt="Loading"
-        class="h-6 animate-spin"
-      />
-    </button>
-    <p
-      *ngIf="errorMessage"
-      class="text-red"
-    >
-      {{ errorMessage }}
-    </p>
-  </div>
-</div>
-<div
-  *ngIf="selectedSet && selectedSize && showBinder"
-  class="flex flex-col items-start gap-8"
->
-  <button
-    class="flex justify-center w-32 py-4 bg-red hover:bg-opacity-90 text-white font-bold rounded-full duration-100"
-    (click)="back()"
-  >
-    Back
-  </button>
-  <div class="flex flex-col gap-4">
-    <p class="text-2xl font-bold">
-      Selected settings
-    </p>
-    <div class="flex flex-col gap-2">
-      <div class="grid grid-cols-settings gap-8">
-        <p>
-          Series:
-        </p>
-        <p>
-          {{ selectedSet.series }}
-        </p>
-      </div>
-      <div class="grid grid-cols-settings gap-8">
-        <p>
-          Set:
-        </p>
-        <p>
-          {{ selectedSet.name }}
-        </p>
-      </div>
-      <div class="grid grid-cols-settings gap-8">
-        <p>
-          Page size:
-        </p>
-        <p>
-          {{ selectedSize.height }}x{{ selectedSize.width }}
-        </p>
-      </div>
-      <div class="grid grid-cols-settings gap-8">
-        <p>
-          Card amount:
-        </p>
-        <p>
-          {{ filteredCards.length }}
-        </p>
-      </div>
-      <div class="grid grid-cols-settings gap-8">
-        <p>
-          Page amount:
-        </p>
-        <p>
-          {{ pageAmount }}
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="flex flex-col gap-4">
-    <p class="text-2xl font-bold">
-      Binder preview
-    </p>
-    <app-binder
-      *ngIf="selectedSet && selectedSize && cards.length > 0"
-      [cards]="filteredCards"
-      [size]="selectedSize"
-    ></app-binder>
-  </div>
-</div> -->

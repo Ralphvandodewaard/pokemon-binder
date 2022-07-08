@@ -60,7 +60,8 @@ export class OverviewComponent implements OnInit {
       const payload: Preset = {
         set: {
           id: this.selectedSet!.id,
-          logo: this.selectedSet!.images.logo
+          logo: this.selectedSet!.images.logo,
+          name: this.selectedSet!.name
         },
         size: this.selectedSize!,
         style: this.selectedStyle!.label
