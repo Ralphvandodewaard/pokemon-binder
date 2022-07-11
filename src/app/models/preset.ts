@@ -1,11 +1,9 @@
+import { Set } from "./set";
 import { Size } from "./size";
+import { Style } from "./style";
 
 export interface Preset {
-  set: {
-    id: string,
-    logo: string,
-    name: string
-  },
+  set: Set,
   size: Size,
-  style: string
+  style: Style
 }

@@ -1,0 +1,84 @@
+<app-loading *ngIf="isLoading"></app-loading>
+<div
+  *ngIf="!isLoading"
+  class="flex flex-col items-center gap-4"
+>
+  <div class="flex pb-2 overflow-x-auto">
+    <div
+      *ngIf="pages[0].length == 0 || pages[1].length == 0"
+      [ngClass]="orderClass"
+      class="flex-shrink-0 grid grid-cols-1 grid-rows-1"
+    >
+      <div
+        [ngClass]="emptyPageClasses"
+        class="border-2 border-gray-400"
+      ></div>
+    </div>
+    <div
+      *ngFor="let page of pages"
+      [ngClass]="getPageClasses(page)"
+      class="flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-gray-400"
+    >
+      <a
+        *ngFor="let card of page"
+        [href]="card.images.large"
+        target="_blank"
+        class="w-20 mobile:w-32 h-card-mobile mobile:h-card-desktop"
+      >
+        <img
+          [src]="card.images.small"
+          class="w-full h-auto"
+        />
+      </a>
+    </div>
+  </div>
+  <div
+    [ngStyle]="{ 'max-width': controlsWidth }"
+    class="flex justify-between gap-2 w-full"
+  >
+    <p class="w-5 text-left">
+      {{ currentPageLeft }}
+    </p>
+    <div class="flex items-center gap-4">
+      <button
+        [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
+        class="flex justify-center items-center w-10 h-10 text-white font-bold rounded-full"
+        (click)="goToPage('first')"
+      >
+        <p>
+          0
+        </p>
+      </button>
+      <button
+        [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
+        class="flex justify-center items-center w-12 h-12 text-white font-bold rounded-full"
+        (click)="goToPage('previous')"
+      >
+        <div class="pr-1">
+          <img src="assets/icons/arrow-left.svg" class="w-3" />
+        </div>
+      </button>
+      <button
+        [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
+        class="flex justify-center items-center w-12 h-12 text-white font-bold rounded-full"
+        (click)="goToPage('next')"
+      >
+        <div class="pl-1">
+          <img src="assets/icons/arrow-right.svg" class="w-3" />
+        </div>
+      </button>
+      <button
+        [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
+        class="flex justify-center items-center w-10 h-10 text-white font-bold rounded-full"
+        (click)="goToPage('last')"
+      >
+        <p>
+          {{ pageAmount }}
+        </p>
+      </button>
+    </div>
+    <p class="w-5 text-right">
+      {{ currentPageRight }}
+    </p>
+  </div>
+</div>

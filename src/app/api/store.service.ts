@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
-import { Series, Set, Size, Style } from '../models';
+import { Card, Series, Set, Size, Style } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,8 @@ export class StoreService {
   selectedSize: Size | null = null;
 
   selectedStyle: Style | null = null;
+
+  cards: Card[] = [];
 
   constructor(
     private pokemon: PokemonService
@@ -59,13 +61,27 @@ export class StoreService {
         const payload = {
           logo: set.images.logo,
           name: set.series,
-          releaseDate: set.releaseDate
         }
         this.series.push(payload);
       }
     })
 
     return this.series;
+  }
+
+  async getCards(): Promise<Card[]> {
+    if (this.cards.length > 0 && this.cards[0].id.split('-')[0] === this.selectedSet!.id) {
+      return this.cards;
+    }
+
+    let data = await firstValueFrom(this.pokemon.getCards(this.selectedSet!.id));
+    this.cards = data;
+
+    if (this.cards.length >= 250) {
+      data = await firstValueFrom(this.pokemon.getCards(this.selectedSet!.id, 2));
+      this.cards = this.cards.concat(data);
+    }
+    return this.cards;
   }
 
 }

@@ -6,11 +6,16 @@ import { SeriesComponent } from './steps/series/series.component';
 import { SetComponent } from './steps/set/set.component';
 import { StyleComponent } from './steps/style/style.component';
 import { OverviewComponent } from './steps/overview/overview.component';
+import { BinderComponent } from './binder/binder.component';
 
 const routes: Routes = [
   {
     path: '',
     component: HomeComponent
+  },
+  {
+    path: 'binder',
+    component: BinderComponent
   },
   {
     path: 'new',

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { StoreService } from '../api/store.service';
 import { Preset, Series, Set } from '../models';
 // import constants from '../shared/constants';
@@ -17,7 +18,8 @@ export class HomeComponent implements OnInit {
   series: Series[] = [];
 
   constructor(
-    private store: StoreService
+    private store: StoreService,
+    private router: Router
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -36,6 +38,14 @@ export class HomeComponent implements OnInit {
   deletePreset(index: number): void {
     this.presets.splice(index, 1);
     localStorage.setItem('presets', JSON.stringify(this.presets));
+  }
+
+  navigateToBinder(preset: Preset): void {
+    this.store.selectedSet = preset.set;
+    this.store.selectedSize = preset.size;
+    this.store.selectedStyle = preset.style;
+
+    this.router.navigate(['/binder']);
   }
 
   // loadingSets = true;

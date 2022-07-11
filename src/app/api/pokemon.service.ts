@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { CardsDto, Set, SetsDto } from '../models';
+import { Card, CardsDto, Set, SetsDto } from '../models';
 import constants from '../shared/constants';
 
 @Injectable({
@@ -20,9 +20,12 @@ export class PokemonService {
     );
   }
 
-  getCards(id: string, page: number = 1): Observable<CardsDto> {
+  getCards(id: string, page: number = 1): Observable<Card[]> {
     return this.http
-    .get<CardsDto>(`${constants.API_URL}/cards?q=set.id:${id}&page=${page}`);
+    .get<CardsDto>(`${constants.API_URL}/cards?q=set.id:${id}&page=${page}`)
+    .pipe(
+      map((data: CardsDto) => data.data)
+    );
   }
 
 }

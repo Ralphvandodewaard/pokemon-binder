@@ -17,6 +17,7 @@ import { SizeComponent } from './steps/size/size.component';
 import { StyleComponent } from './steps/style/style.component';
 import { CardComponent } from './shared/binder-image/card/card.component';
 import { OverviewComponent } from './steps/overview/overview.component';
+import { BinderComponent } from './binder/binder.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { OverviewComponent } from './steps/overview/overview.component';
     SizeComponent,
     StyleComponent,
     CardComponent,
-    OverviewComponent
+    OverviewComponent,
+    BinderComponent
   ],
   imports: [
     BrowserModule,

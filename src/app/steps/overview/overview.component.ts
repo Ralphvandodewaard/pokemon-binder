@@ -8,8 +8,6 @@ import { Preset, Series, Set, Size, Style } from 'src/app/models';
   templateUrl: './overview.component.html'
 })
 export class OverviewComponent implements OnInit {
-  isLoading = false;
-
   selectedSeries: Series | null = null;
 
   selectedSet: Set | null = null;
@@ -49,7 +47,7 @@ export class OverviewComponent implements OnInit {
     this.saveAsPreset = !this.saveAsPreset;
   }
 
-  createBinder(): void {
+  navigateToBinder(): void {
     if (this.saveAsPreset) {
       let presets: Preset[] = [];
 
@@ -58,18 +56,16 @@ export class OverviewComponent implements OnInit {
       }
 
       const payload: Preset = {
-        set: {
-          id: this.selectedSet!.id,
-          logo: this.selectedSet!.images.logo,
-          name: this.selectedSet!.name
-        },
+        set: this.selectedSet!,
         size: this.selectedSize!,
-        style: this.selectedStyle!.label
+        style: this.selectedStyle!
       }
       presets.push(payload);
 
       localStorage.setItem('presets', JSON.stringify(presets));
     }
+
+    this.router.navigate(['/binder']);
   }
 
 }
