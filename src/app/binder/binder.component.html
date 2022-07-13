@@ -1,6 +1,6 @@
 <app-loading *ngIf="isLoading"></app-loading>
 <div
-  *ngIf="!isLoading"
+  *ngIf="!isLoading && selectedSet && selectedSize"
   class="flex flex-col items-center gap-4"
 >
   <div class="flex pb-2 overflow-x-auto">
@@ -11,8 +11,18 @@
     >
       <div
         [ngClass]="emptyPageClasses"
-        class="border-2 border-gray-400"
-      ></div>
+        class="flex justify-center border-2 border-gray-400"
+      >
+        <div
+          *ngIf="currentPageLeft == 0"
+          class="flex justify-center items-center h-full max-w-xs p-2 mobile:p-4"
+        >
+          <img
+            [src]="selectedSet.images.logo"
+            [alt]="selectedSet.name"
+          />
+        </div>
+      </div>
     </div>
     <div
       *ngFor="let page of pages"

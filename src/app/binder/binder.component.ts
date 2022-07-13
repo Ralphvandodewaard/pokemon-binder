@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../api/store.service';
-import { Card, Size } from '../models';
+import { Card, Set, Size } from '../models';
 
 @Component({
   selector: 'app-binder',
@@ -10,9 +10,11 @@ import { Card, Size } from '../models';
 export class BinderComponent implements OnInit {
   isLoading = true;
 
-  cards: Card[] = [];
+  selectedSet: Set | null = null;
 
   selectedSize: Size | null = null;
+
+  cards: Card[] = [];
 
   currentPageLeft = 0;
 
@@ -33,6 +35,7 @@ export class BinderComponent implements OnInit {
       return;
     }
 
+    this.selectedSet = this.store.selectedSet;
     this.selectedSize = this.store.selectedSize;
     this.cards = await this.store.getCards();
 
