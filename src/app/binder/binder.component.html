@@ -1,6 +1,6 @@
 <app-loading *ngIf="isLoading"></app-loading>
 <div
-  *ngIf="!isLoading && selectedSet && selectedSize"
+  *ngIf="!isLoading && selectedSet && selectedSize && selectedStyle"
   class="flex flex-col items-center gap-4"
 >
   <div class="flex pb-2 overflow-x-auto">
@@ -15,12 +15,25 @@
       >
         <div
           *ngIf="currentPageLeft == 0"
-          class="flex justify-center items-center h-full max-w-xs p-2 mobile:p-4"
+          class="flex flex-col justify-center items-center gap-4 h-full max-w-xs p-2 mobile:p-4"
         >
           <img
             [src]="selectedSet.images.logo"
             [alt]="selectedSet.name"
           />
+          <div class="flex flex-col gap-1 text-sm mobile:text-base">
+            <div
+              *ngFor="let info of binderInfo"
+              class="grid grid-cols-3 gap-1"
+            >
+              <p class="truncate">
+                {{ info.label }}:
+              </p>
+              <p class="col-span-2 font-semibold truncate">
+                {{ info.value }}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
