@@ -32,9 +32,9 @@
   <button
     *ngIf="isDeletable"
     [ngClass]="deleteButtonVisible ? 'opacity-100' : 'opacity-100 sm::opacity-0 sm:cursor-default sm:-z-10'"
-    class="absolute flex justify-center items-center -top-1 -right-1 w-6 h-6 rounded-full bg-red border-2 border-transparent hover:border-primary duration-100 outline-none"
+    class="absolute -top-1 -right-1 w-6 h-6 p-1 bg-red rounded-full border-2 border-transparent hover:border-primary duration-100 outline-none"
     (click)="emitDelete()"
   >
-    <img src="assets/icons/delete.svg" alt="Delete" />
+    <app-delete-icon></app-delete-icon>
   </button>
 </div>

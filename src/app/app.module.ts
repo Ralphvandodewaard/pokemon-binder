@@ -19,6 +19,12 @@ import { CardComponent } from './shared/binder-image/card/card.component';
 import { OverviewComponent } from './steps/overview/overview.component';
 import { BinderComponent } from './binder/binder.component';
 
+import { PlusIconComponent } from 'src/assets/icons/plus-icon/plus-icon.component';
+import { DeleteIconComponent } from 'src/assets/icons/delete-icon/delete-icon.component';
+import { CheckmarkIconComponent } from 'src/assets/icons/checkmark-icon/checkmark-icon.component';
+import { AngleRightIconComponent } from 'src/assets/icons/angle-right-icon/angle-right-icon.component';
+import { AngleLeftIconComponent } from 'src/assets/icons/angle-left-icon/angle-left-icon.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +41,12 @@ import { BinderComponent } from './binder/binder.component';
     StyleComponent,
     CardComponent,
     OverviewComponent,
-    BinderComponent
+    BinderComponent,
+    PlusIconComponent,
+    DeleteIconComponent,
+    CheckmarkIconComponent,
+    AngleRightIconComponent,
+    AngleLeftIconComponent
   ],
   imports: [
     BrowserModule,

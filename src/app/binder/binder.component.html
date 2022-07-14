@@ -52,7 +52,7 @@
     <div class="flex items-center gap-4">
       <button
         [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
-        class="flex justify-center items-center w-10 h-10 text-white font-bold rounded-full"
+        class="flex justify-center items-center w-10 h-10 text-white font-semibold rounded-full"
         (click)="goToPage('first')"
       >
         <p>
@@ -61,25 +61,21 @@
       </button>
       <button
         [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
-        class="flex justify-center items-center w-12 h-12 text-white font-bold rounded-full"
+        class="w-12 h-12 p-3 rounded-full"
         (click)="goToPage('previous')"
       >
-        <div class="pr-1">
-          <img src="assets/icons/arrow-left.svg" class="w-3" />
-        </div>
+        <app-angle-left-icon></app-angle-left-icon>
       </button>
       <button
         [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
-        class="flex justify-center items-center w-12 h-12 text-white font-bold rounded-full"
+        class="w-12 h-12 p-3 rounded-full"
         (click)="goToPage('next')"
       >
-        <div class="pl-1">
-          <img src="assets/icons/arrow-right.svg" class="w-3" />
-        </div>
+        <app-angle-right-icon></app-angle-right-icon>
       </button>
       <button
         [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
-        class="flex justify-center items-center w-10 h-10 text-white font-bold rounded-full"
+        class="flex justify-center items-center w-10 h-10 text-white font-semibold rounded-full"
         (click)="goToPage('last')"
       >
         <p>
