@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { BinderOldComponent } from './home/binder/binder-old.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { SeriesComponent } from './steps/series/series.component';
 import { ButtonComponent } from './shared/button/button.component';
@@ -31,7 +30,6 @@ import { AngleUpIconComponent } from 'src/assets/icons/angle-up-icon/angle-up-ic
   declarations: [
     AppComponent,
     HomeComponent,
-    BinderOldComponent,
     HeaderComponent,
     SeriesComponent,
     ButtonComponent,
