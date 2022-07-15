@@ -3,7 +3,42 @@
   *ngIf="!isLoading && selectedSet && selectedSize && selectedStyle"
   class="flex flex-col items-center gap-4"
 >
-  <div class="flex pb-2 overflow-x-auto">
+  <div class="flex flex-col max-w-md w-full ">
+    <button
+      [ngClass]="settingsOpen ? 'rounded-t-3xl' : 'rounded-full'"
+      class="relative flex justify-center items-center w-full px-6 py-4 bg-primary text-white font-semibold border border-primary"
+      (click)="toggleSettings()"
+    >
+      <p>
+        Filters
+      </p>
+      <div class="absolute right-6 w-3">
+        <app-angle-down-icon *ngIf="!settingsOpen"></app-angle-down-icon>
+        <app-angle-up-icon *ngIf="settingsOpen"></app-angle-up-icon>
+      </div>
+    </button>
+    <div
+      class="flex flex-col border-2 border-t-0 border-primary rounded-b-lg divide-y divide-gray-200 overflow-hidden"
+      *ngIf="settingsOpen"
+    >
+      <button
+        *ngFor="let filter of filters"
+        class="flex items-center gap-4 w-full px-6 py-4 bg-white"
+        (click)="toggleFilter(filter)"
+      >
+        <p class="text-sm mobile:text-base">
+          {{ filter.label }}
+        </p>
+        <div
+          [ngClass]="filter.isEnabled ? 'bg-green' : 'bg-disabled'"
+          class="h-6 w-6 ml-auto p-1 rounded-full"
+        >
+          <app-checkmark-icon></app-checkmark-icon>
+        </div>
+      </button>
+    </div>
+  </div>
+  <div class="flex py-2 overflow-x-auto">
     <div
       *ngIf="pages[0].length == 0 || pages[1].length == 0"
       [ngClass]="orderClass"
@@ -11,16 +46,19 @@
     >
       <div
         [ngClass]="emptyPageClasses"
-        class="flex justify-center border-2 border-gray-400"
+        class="flex justify-center border-2 border-primary"
       >
         <div
           *ngIf="currentPageLeft == 0"
-          class="flex flex-col justify-center items-center gap-4 h-full max-w-xs p-2 mobile:p-4"
+          class="flex flex-col justify-center items-center gap-4 max-w-xs h-full p-2 mobile:p-4"
         >
-          <img
-            [src]="selectedSet.images.logo"
-            [alt]="selectedSet.name"
-          />
+          <div class="flex items-center h-20 mobile:h-32">
+            <img
+              [src]="selectedSet.images.logo"
+              [alt]="selectedSet.name"
+              class="max-w-full max-h-full"
+            />
+          </div>
           <div class="flex flex-col gap-1 text-sm mobile:text-base">
             <div
               *ngFor="let info of binderInfo"
@@ -38,9 +76,18 @@
       </div>
     </div>
     <div
+      *ngIf="pages[0].length == 0 && pages[1].length == 0"
+      class="order-2 flex-shrink-0 grid grid-cols-1 grid-rows-1"
+    >
+      <div
+        [ngClass]="emptyPageClasses"
+        class="border-2 border-primary"
+      ></div>
+    </div>
+    <div
       *ngFor="let page of pages"
       [ngClass]="getPageClasses(page)"
-      class="flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-gray-400"
+      class="flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-primary"
     >
       <a
         *ngFor="let card of page"
@@ -64,7 +111,8 @@
     </p>
     <div class="flex items-center gap-4">
       <button
-        [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
+        [disabled]="isFirstPage"
+        [class]="!isFirstPage ? 'bg-primary' : 'bg-disabled cursor-default'"
         class="flex justify-center items-center w-10 h-10 text-white font-semibold rounded-full"
         (click)="goToPage('first')"
       >
@@ -73,21 +121,24 @@
         </p>
       </button>
       <button
-        [class]="currentPageLeft > 0 ? 'bg-primary' : 'bg-disabled cursor-default'"
+        [disabled]="isFirstPage"
+        [class]="!isFirstPage ? 'bg-primary' : 'bg-disabled cursor-default'"
         class="w-12 h-12 p-3 rounded-full"
         (click)="goToPage('previous')"
       >
         <app-angle-left-icon></app-angle-left-icon>
       </button>
       <button
-        [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
+        [disabled]="isLastPage"
+        [class]="!isLastPage ? 'bg-primary' : 'bg-disabled cursor-default'"
         class="w-12 h-12 p-3 rounded-full"
         (click)="goToPage('next')"
       >
         <app-angle-right-icon></app-angle-right-icon>
       </button>
       <button
-        [class]="currentPageRight < (cards.length / pageSize) ? 'bg-primary' : 'bg-disabled cursor-default'"
+        [disabled]="isLastPage"
+        [class]="!isLastPage ? 'bg-primary' : 'bg-disabled cursor-default'"
         class="flex justify-center items-center w-10 h-10 text-white font-semibold rounded-full"
         (click)="goToPage('last')"
       >

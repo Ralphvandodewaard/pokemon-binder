@@ -50,12 +50,17 @@ export class OverviewComponent implements OnInit {
   navigateToBinder(): void {
     if (this.saveAsPreset) {
       let presets: Preset[] = [];
-
       if (localStorage.getItem('presets')) {
         presets = JSON.parse(localStorage.getItem('presets')!);
       }
 
+      let presetId = 1;
+      if (presets.length > 0) {
+        presetId = presets[presets.length - 1].id + 1;
+      }
+
       const payload: Preset = {
+        id: presetId,
         set: this.selectedSet!,
         size: this.selectedSize!,
         style: this.selectedStyle!
@@ -63,6 +68,10 @@ export class OverviewComponent implements OnInit {
       presets.push(payload);
 
       localStorage.setItem('presets', JSON.stringify(presets));
+
+      this.store.selectedPreset = payload;
+    } else {
+      this.store.selectedPreset = null;
     }
 
     this.router.navigate(['/binder']);

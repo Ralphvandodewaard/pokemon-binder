@@ -1,5 +1,5 @@
 export interface Filter {
-  id: number,
-  description: string,
-  enabled?: boolean
+  key: string,
+  label: string,
+  isEnabled: boolean
 }

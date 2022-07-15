@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../api/store.service';
-import { Card, Set, Size, Style } from '../models';
+import { Card, Filter, Preset, Set, Size, Style } from '../models';
+import constants from '../shared/constants';
 
 @Component({
   selector: 'app-binder',
@@ -14,15 +15,27 @@ export class BinderComponent implements OnInit {
 
   selectedSize: Size | null = null;
 
-  selectedStyle: Style | null = null
+  selectedStyle: Style | null = null;
+
+  selectedPreset: Preset | null = null;
 
   cards: Card[] = [];
+
+  filteredCards: Card[] = [];
 
   currentPageLeft = 0;
 
   currentPageRight = 1;
 
-  binderInfo: { label: string, value: string | number }[] = [];
+  settingsOpen = false;
+
+  filters: Filter[] = [
+    { key: 'common', label: 'Include common cards', isEnabled: true },
+    { key: 'uncommon', label: 'Include uncommon cards', isEnabled: true },
+    { key: 'rare', label: 'Include rare cards', isEnabled: true },
+    { key: 'ultra rare', label: 'Include ultra rare cards', isEnabled: true },
+    { key: 'secret rare', label: 'Include secret rare cards', isEnabled: true }
+  ];
 
   constructor(
     private store: StoreService,
@@ -31,24 +44,30 @@ export class BinderComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     if (
-      !this.store.selectedSet ||
-      !this.store.selectedSize ||
-      !this.store.selectedStyle
+      (!this.store.selectedSet || !this.store.selectedSize || !this.store.selectedStyle) &&
+      !this.store.selectedPreset
       ) {
       this.router.navigate(['/']);
       return;
     }
 
-    this.selectedSet = this.store.selectedSet;
-    this.selectedSize = this.store.selectedSize;
-    this.selectedStyle = this.store.selectedStyle;
+    this.selectedPreset = this.store.selectedPreset;
+    this.selectedSet = this.selectedPreset ? this.selectedPreset.set : this.store.selectedSet;
+    this.selectedSize = this.selectedPreset ? this.selectedPreset.size : this.store.selectedSize;
+    this.selectedStyle = this.selectedPreset ? this.selectedPreset.style : this.store.selectedStyle;
+
     this.cards = await this.store.getCards();
-    this.binderInfo = [
-      { label: 'Series', value: this.selectedSet!.series },
-      { label: 'Set', value: this.selectedSet!.name },
-      { label: 'Cards', value: this.selectedSet!.printedTotal },
-      { label: 'Pages', value: this.pageAmount },
-    ];
+    this.filteredCards = this.cards;
+
+    if (this.selectedPreset && this.selectedPreset.filters) {
+      this.filters[0].isEnabled = this.selectedPreset.filters.common;
+      this.filters[1].isEnabled = this.selectedPreset.filters.uncommon;
+      this.filters[2].isEnabled = this.selectedPreset.filters.rare;
+      this.filters[3].isEnabled = this.selectedPreset.filters.ultraRare;
+      this.filters[4].isEnabled = this.selectedPreset.filters.secretRare;
+
+      this.filterCards();
+    }
 
     this.isLoading = false;
   }
@@ -80,7 +99,7 @@ export class BinderComponent implements OnInit {
 
   get cardsLeft(): Card[] {
     if (this.currentPageLeft > 0) {
-      return this.cards.slice((this.currentPageLeft * this.pageSize) - this.pageSize, this.currentPageLeft * this.pageSize);
+      return this.filteredCards.slice((this.currentPageLeft * this.pageSize) - this.pageSize, this.currentPageLeft * this.pageSize);
     } else {
       return [];
     }
@@ -88,7 +107,7 @@ export class BinderComponent implements OnInit {
 
   get cardsRight(): Card[] {
     if (this.currentPageRight > 0) {
-      return this.cards.slice((this.currentPageRight * this.pageSize) - this.pageSize, this.currentPageRight * this.pageSize);
+      return this.filteredCards.slice((this.currentPageRight * this.pageSize) - this.pageSize, this.currentPageRight * this.pageSize);
     } else {
       return [];
     }
@@ -110,10 +129,18 @@ export class BinderComponent implements OnInit {
   }
 
   get pageAmount(): number {
-    return Math.ceil(this.cards.length / (this.selectedSize!.width * this.selectedSize!.height));
+    return Math.ceil(this.filteredCards.length / (this.selectedSize!.width * this.selectedSize!.height));
   }
 
-  goToPage(page: string) {
+  get isFirstPage(): boolean {
+    return this.currentPageLeft == 0;
+  }
+
+  get isLastPage(): boolean {
+    return this.currentPageRight >= (this.filteredCards.length / this.pageSize);
+  }
+
+  goToPage(page: string): void {
     switch (page) {
       case 'first':
         this.currentPageLeft = 0;
@@ -131,12 +158,110 @@ export class BinderComponent implements OnInit {
         }
         break;
       default:
-        if (this.currentPageRight < (this.cards.length / this.pageSize)) {
+        if (this.currentPageRight < (this.filteredCards.length / this.pageSize)) {
           this.currentPageLeft = this.currentPageLeft + 2;
           this.currentPageRight = this.currentPageRight + 2;
         }
         break;
     }
+  }
+
+  get binderInfo(): { label: string, value: string | number }[] {
+    return [
+      { label: 'Series', value: this.selectedSet!.series },
+      { label: 'Set', value: this.selectedSet!.name },
+      { label: 'Cards', value: this.filteredCards.length },
+      { label: 'Pages', value: this.pageAmount },
+    ];
+  }
+
+  toggleSettings(): void {
+    this.settingsOpen = !this.settingsOpen;
+  }
+
+  toggleFilter(filter: Filter): void {
+    filter.isEnabled = !filter.isEnabled;
+
+    this.filterCards();
+
+    if (this.filteredCards.length == 0) {
+      this.goToPage('first');
+    } else if (this.isLastPage) {
+      this.goToPage('last');
+    }
+
+    if (this.selectedPreset) {
+      let presets: Preset[] = [];
+      if (localStorage.getItem('presets')) {
+        presets = JSON.parse(localStorage.getItem('presets')!);
+      }
+
+      let preset = presets.filter((preset: Preset) => preset.id === this.selectedPreset!.id)[0];
+
+      preset.filters = {
+        common: this.filters[0].isEnabled,
+        uncommon: this.filters[1].isEnabled,
+        rare: this.filters[2].isEnabled,
+        ultraRare: this.filters[3].isEnabled,
+        secretRare: this.filters[4].isEnabled,
+      }
+
+      localStorage.setItem('presets', JSON.stringify(presets));
+    }
+  }
+
+  filterCards(): void {
+    this.filteredCards = this.cards;
+
+    this.filters.forEach((filter: Filter) => {
+      if (!filter.isEnabled) {
+        switch (filter.key) {
+          case 'common':
+            this.filteredCards = this.filteredCards.filter((card: Card) => card.rarity.toLowerCase() !== constants.RARITIES.COMMON);
+            break;
+          case 'uncommon':
+            this.filteredCards = this.filteredCards.filter((card: Card) => card.rarity.toLowerCase() !== constants.RARITIES.UNCOMMON);
+            break;
+          case 'rare':
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO
+            );
+            break;
+          case 'ultra rare':
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.LEGEND &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RADIANT_RARE &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_ACE &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_BREAK &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_EX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_GX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_LVX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_STAR &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_V &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_VMAX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_HOLO_VSTAR &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_PRIME &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_PRISM_STAR &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_SHINY &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_SHINY_GX &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_ULTRA
+            );
+            break;
+          case 'secret rare':
+            this.filteredCards = this.filteredCards.filter((card: Card) =>
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_RAINBOW &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_SECRET &&
+              card.rarity.toLowerCase() !== constants.RARITIES.RARE_SHINING
+            );
+            break;
+          default:
+            break;
+        }
+      }
+    })
+
+    this.filteredCards.sort((a: Card, b: Card) => Number(a.id.split('-')[1]) - Number(b.id.split('-')[1]));
   }
 
 }

@@ -3,16 +3,15 @@
   *ngIf="!isLoading"
   [ngClass]="presets.length < 5 ? 'flex justify-center' : ''"
 >
-  <a routerLink="/new">
-    <app-button
-      label="New binder"
-      [binderImage]="{
-        width: 3,
-        height: 3,
-        hasPlus: true
-      }"
-    ></app-button>
-  </a>
+  <app-button
+    label="New binder"
+    [binderImage]="{
+      width: 3,
+      height: 3,
+      hasPlus: true
+    }"
+    (click)="navigateToNew()"
+  ></app-button>
   <app-button
     *ngFor="let preset of presets; index as i"
     label="Load preset"

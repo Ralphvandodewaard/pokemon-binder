@@ -24,6 +24,8 @@ import { DeleteIconComponent } from 'src/assets/icons/delete-icon/delete-icon.co
 import { CheckmarkIconComponent } from 'src/assets/icons/checkmark-icon/checkmark-icon.component';
 import { AngleRightIconComponent } from 'src/assets/icons/angle-right-icon/angle-right-icon.component';
 import { AngleLeftIconComponent } from 'src/assets/icons/angle-left-icon/angle-left-icon.component';
+import { AngleDownIconComponent } from 'src/assets/icons/angle-down-icon/angle-down-icon.component';
+import { AngleUpIconComponent } from 'src/assets/icons/angle-up-icon/angle-up-icon.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { AngleLeftIconComponent } from 'src/assets/icons/angle-left-icon/angle-l
     DeleteIconComponent,
     CheckmarkIconComponent,
     AngleRightIconComponent,
-    AngleLeftIconComponent
+    AngleLeftIconComponent,
+    AngleDownIconComponent,
+    AngleUpIconComponent
   ],
   imports: [
     BrowserModule,

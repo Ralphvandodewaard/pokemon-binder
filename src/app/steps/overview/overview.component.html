@@ -39,7 +39,7 @@
   </app-step-wrapper>
   <div class="flex flex-col mobile:flex-row gap-4 mobile:gap-2">
     <button
-      class="order-2 mobile:order-1 mobile:w-max px-6 py-4 bg-primary text-white font-bold border border-primary rounded-full"
+      class="order-2 mobile:order-1 mobile:w-44 px-6 py-4 bg-primary text-white font-semibold border border-primary rounded-full"
       (click)="navigateToBinder()"
     >
       <p>
@@ -51,7 +51,7 @@
       (click)="toggleSaveAsPreset()"
     >
       <div
-        [ngClass]="saveAsPreset ? 'bg-green' : 'bg-gray-200'"
+        [ngClass]="saveAsPreset ? 'bg-green' : 'bg-disabled'"
         class="h-6 w-6 p-1 rounded-full"
       >
         <app-checkmark-icon></app-checkmark-icon>
