@@ -164,10 +164,9 @@ export class BinderComponent implements OnInit {
 
   get binderInfo(): { label: string, value: string | number }[] {
     return [
-      { label: 'Series', value: this.selectedSet!.series },
       { label: 'Set', value: this.selectedSet!.name },
       { label: 'Cards', value: this.filteredCards.length },
-      { label: 'Pages', value: this.pageAmount },
+      { label: 'Collected', value: this.collectedCardsAmount },
     ];
   }
 
@@ -260,8 +259,21 @@ export class BinderComponent implements OnInit {
     this.filteredCards.sort((a: Card, b: Card) => Number(a.id.split('-')[1]) - Number(b.id.split('-')[1]));
   }
 
+  get collectedCardsAmount(): number {
+    const collectedCardsInSet = this.collectedCardIds.filter((id: string) => id.split('-')[0] === this.selectedSet!.id);
+
+    let amount = 0;
+    this.filteredCards.forEach((card: Card) => {
+      if (collectedCardsInSet.includes(card.id)) {
+        amount++;
+      }
+    });
+
+    return amount;
+  }
+
   get isCollection(): boolean {
-    return this.selectedPreset ? this.selectedPreset.style.isCollection : false;
+    return this.selectedPreset ? this.selectedPreset.style.isCollection : this.selectedStyle!.isCollection;
   }
 
   cardCollected(cardId: string): boolean {

@@ -62,12 +62,12 @@
           <div class="flex flex-col gap-1 text-sm mobile:text-base">
             <div
               *ngFor="let info of binderInfo"
-              class="grid grid-cols-3 gap-1"
+              class="grid grid-cols-2 gap-1"
             >
-              <p class="truncate">
+              <p>
                 {{ info.label }}:
               </p>
-              <p class="col-span-2 font-semibold truncate">
+              <p class="font-semibold">
                 {{ info.value }}
               </p>
             </div>
