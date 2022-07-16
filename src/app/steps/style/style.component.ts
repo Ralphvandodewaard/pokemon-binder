@@ -12,7 +12,7 @@ export class StyleComponent implements OnInit {
     {
       label: 'Collection',
       isCollection: true,
-      description: 'Cards not in your collection will be grayed out by default. Click on a card to save it to your collection. This data persists across binders.'
+      description: "Cards not in your collection will be grayed out by default. Click on a card's checkmark to save it to your collection. This data persists across binders."
     },
     {
       label: 'View',
