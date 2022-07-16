@@ -29,6 +29,8 @@ export class BinderComponent implements OnInit {
 
   settingsOpen = false;
 
+  collectedCardIds: string[] = [];
+
   filters: Filter[] = [
     { key: 'common', label: 'Include common cards', isEnabled: true },
     { key: 'uncommon', label: 'Include uncommon cards', isEnabled: true },
@@ -59,6 +61,10 @@ export class BinderComponent implements OnInit {
     this.cards = await this.store.getCards();
     this.filteredCards = this.cards;
 
+    if (localStorage.getItem('collected-cards')) {
+      this.collectedCardIds = JSON.parse(localStorage.getItem('collected-cards')!);
+    }
+
     if (this.selectedPreset && this.selectedPreset.filters) {
       this.filters[0].isEnabled = this.selectedPreset.filters.common;
       this.filters[1].isEnabled = this.selectedPreset.filters.uncommon;
@@ -72,18 +78,12 @@ export class BinderComponent implements OnInit {
     this.isLoading = false;
   }
 
-  getPageClasses(page: Card[]): string {
-    if (page.length == 0) {
-      return 'hidden';
-    } else {
-      const orderClass = this.pages[0].length == 0 ? 'order-2' : 'order-1';
-      const gridClasses = `grid-cols-${this.selectedSize!.width} grid-rows-${this.selectedSize!.height}`;
-      return `${orderClass} ${gridClasses}`;
-    }
+  getPageClasses(cards: Card[]): string {
+    return cards.length > 0 ? `grid-cols-${this.selectedSize!.width} grid-rows-${this.selectedSize!.height}` : 'hidden';
   }
 
   get orderClass(): string {
-    return this.pages[0].length == 0 ? 'order-1' : 'order-2';
+    return this.cardsLeft.length == 0 ? 'order-1' : 'order-2';
   }
   
   get emptyPageClasses(): string {
@@ -91,10 +91,6 @@ export class BinderComponent implements OnInit {
     const heightClasses = `h-page-${this.selectedSize!.height}-mobile mobile:h-page-${this.selectedSize!.height}-desktop`;
 
     return `${widthClasses} ${heightClasses}`;
-  }
-
-  get pages(): Card[][] {
-    return [this.cardsLeft, this.cardsRight];
   }
 
   get cardsLeft(): Card[] {
@@ -262,6 +258,25 @@ export class BinderComponent implements OnInit {
     })
 
     this.filteredCards.sort((a: Card, b: Card) => Number(a.id.split('-')[1]) - Number(b.id.split('-')[1]));
+  }
+
+  get isCollection(): boolean {
+    return this.selectedPreset ? this.selectedPreset.style.isCollection : false;
+  }
+
+  cardCollected(cardId: string): boolean {
+    return this.collectedCardIds.includes(cardId);
+  }
+
+  toggleCollected(cardId: string): void {
+    if (!this.collectedCardIds.includes(cardId)) {
+      this.collectedCardIds.push(cardId);
+    } else {
+      const index = this.collectedCardIds.indexOf(cardId);
+      this.collectedCardIds.splice(index, 1);
+    }
+
+    localStorage.setItem('collected-cards', JSON.stringify(this.collectedCardIds));
   }
 
 }

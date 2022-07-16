@@ -40,7 +40,7 @@
   </div>
   <div class="flex py-2 overflow-x-auto">
     <div
-      *ngIf="pages[0].length == 0 || pages[1].length == 0"
+      *ngIf="cardsLeft.length == 0 || cardsRight.length == 0"
       [ngClass]="orderClass"
       class="flex-shrink-0 grid grid-cols-1 grid-rows-1"
     >
@@ -76,7 +76,7 @@
       </div>
     </div>
     <div
-      *ngIf="pages[0].length == 0 && pages[1].length == 0"
+      *ngIf="cardsLeft.length == 0 && cardsRight.length == 0"
       class="order-2 flex-shrink-0 grid grid-cols-1 grid-rows-1"
     >
       <div
@@ -85,21 +85,28 @@
       ></div>
     </div>
     <div
-      *ngFor="let page of pages"
-      [ngClass]="getPageClasses(page)"
-      class="flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-primary"
+      [ngClass]="getPageClasses(cardsLeft)"
+      class="order-1 flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-primary"
     >
-      <a
-        *ngFor="let card of page"
-        [href]="card.images.large"
-        target="_blank"
-        class="w-20 mobile:w-32 h-card-mobile mobile:h-card-desktop"
-      >
-        <img
-          [src]="card.images.small"
-          class="w-full h-auto"
-        />
-      </a>
+      <app-binder-card
+        *ngFor="let card of cardsLeft"
+        [card]="card"
+        [isCollection]="isCollection"
+        [isCollected]="cardCollected(card.id)"
+        (toggleCollected)="toggleCollected(card.id)"
+      ></app-binder-card>
+    </div>
+    <div
+      [ngClass]="getPageClasses(cardsRight)"
+      class="order-2 flex-shrink-0 grid gap-2 mobile:gap-4 p-2 mobile:p-4 border-2 border-primary"
+    >
+      <app-binder-card
+        *ngFor="let card of cardsRight"
+        [card]="card"
+        [isCollection]="isCollection"
+        [isCollected]="cardCollected(card.id)"
+        (toggleCollected)="toggleCollected(card.id)"
+      ></app-binder-card>
     </div>
   </div>
   <div

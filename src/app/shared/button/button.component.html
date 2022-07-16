@@ -31,7 +31,7 @@
   </button>
   <button
     *ngIf="isDeletable"
-    [ngClass]="deleteButtonVisible ? 'opacity-100' : 'opacity-100 sm::opacity-0 sm:cursor-default sm:-z-10'"
+    [ngClass]="deleteButtonVisible ? 'opacity-100' : 'opacity-100 sm:opacity-0 sm:cursor-default sm:-z-10'"
     class="absolute -top-1 -right-1 w-6 h-6 p-1 bg-red rounded-full border-2 border-transparent hover:border-primary duration-100 outline-none"
     (click)="emitDelete()"
   >

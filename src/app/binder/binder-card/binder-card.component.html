@@ -1,0 +1,24 @@
+<div
+  class="relative w-20 mobile:w-32 h-card-mobile mobile:h-card-desktop"
+  (mouseleave)="togglePopupButton(false)"
+>
+  <a
+    [href]="card.images.large"
+    target="_blank"
+    (mouseenter)="togglePopupButton(true)"
+  >
+    <img
+      [src]="card.images.small"
+      [alt]="card.name"
+      [ngClass]="isCollection && !isCollected ? 'opacity-50' : ''"
+      class="w-full h-auto duration-100"
+    />
+  </a>
+  <button
+    [ngClass]="popupButtonClasses"
+    class="absolute -top-1 -right-1 w-6 h-6 p-1 rounded-full border-2 hover:border-primary duration-100 outline-none"
+    (click)="emitToggleCollected()"
+  >
+    <app-checkmark-icon></app-checkmark-icon>
+  </button>
+</div>

@@ -25,6 +25,7 @@ import { AngleRightIconComponent } from 'src/assets/icons/angle-right-icon/angle
 import { AngleLeftIconComponent } from 'src/assets/icons/angle-left-icon/angle-left-icon.component';
 import { AngleDownIconComponent } from 'src/assets/icons/angle-down-icon/angle-down-icon.component';
 import { AngleUpIconComponent } from 'src/assets/icons/angle-up-icon/angle-up-icon.component';
+import { BinderCardComponent } from './binder/binder-card/binder-card.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AngleUpIconComponent } from 'src/assets/icons/angle-up-icon/angle-up-ic
     AngleRightIconComponent,
     AngleLeftIconComponent,
     AngleDownIconComponent,
-    AngleUpIconComponent
+    AngleUpIconComponent,
+    BinderCardComponent
   ],
   imports: [
     BrowserModule,
