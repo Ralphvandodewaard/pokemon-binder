@@ -24,7 +24,7 @@ export class SetComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.sets = this.store.getSetsInSeries();
+    this.sets = this.store.getSetsInSeries().reverse();
     this.isLoading = false;
   }
 
