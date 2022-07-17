@@ -26,6 +26,25 @@ export class StoreService {
 
   cards: Card[] = [];
 
+  sizes: Size[] = [
+    { width: 2, height: 2 },
+    { width: 3, height: 3 },
+    { width: 4, height: 3 }
+  ];
+
+  styles: Style[] = [
+    {
+      label: 'Collection',
+      isCollection: true,
+      description: "Cards not in your collection will be grayed out by default. Click on a card's checkmark to save it to your collection. This data persists across binders."
+    },
+    {
+      label: 'View',
+      isCollection: false,
+      description: 'All cards in this binder will be displayed as if they were collected.'
+    }
+  ];
+
   constructor(
     private pokemon: PokemonService
   ) { }
@@ -45,7 +64,11 @@ export class StoreService {
       return this.setsInSeries;
     }
 
-    this.setsInSeries = this.allSets.filter((set: Set) => set.series === this.selectedSeries!.name);
+    this.setsInSeries = this.allSets.filter((set: Set) =>
+      set.series === this.selectedSeries!.name &&
+      !set.id.includes('mcd') &&
+      !set.id.includes('tk')
+    );
     return this.setsInSeries;
   }
 
@@ -88,43 +111,49 @@ export class StoreService {
     }
   
     this.cards.forEach((card: Card) => {
-      switch (card.rarity.toLowerCase()) {
-        case constants.RARITIES.COMMON:
-          card.raritySortingIndex = 1;
-          break;
-        case constants.RARITIES.UNCOMMON:
-          card.raritySortingIndex = 2;
-          break;
-        case constants.RARITIES.RARE:
-        case constants.RARITIES.RARE_HOLO:
-          card.raritySortingIndex = 3;
-          break;
-        case constants.RARITIES.LEGEND:
-        case constants.RARITIES.RADIANT_RARE:
-        case constants.RARITIES.RARE_ACE:
-        case constants.RARITIES.RARE_BREAK:
-        case constants.RARITIES.RARE_HOLO_EX:
-        case constants.RARITIES.RARE_HOLO_GX:
-        case constants.RARITIES.RARE_HOLO_LVX:
-        case constants.RARITIES.RARE_HOLO_STAR:
-        case constants.RARITIES.RARE_HOLO_V:
-        case constants.RARITIES.RARE_HOLO_VMAX:
-        case constants.RARITIES.RARE_HOLO_VSTAR:
-        case constants.RARITIES.RARE_PRIME:
-        case constants.RARITIES.RARE_PRISM_STAR:
-        case constants.RARITIES.RARE_SHINY:
-        case constants.RARITIES.RARE_SHINY_GX:
-        case constants.RARITIES.RARE_ULTRA:
-          card.raritySortingIndex = 4;
-          break;
-        case constants.RARITIES.RARE_RAINBOW:
-        case constants.RARITIES.RARE_SECRET:
-        case constants.RARITIES.RARE_SHINING:
-          card.raritySortingIndex = 5;
-          break;
-        default:
-          card.raritySortingIndex = 6;
-          break;
+      card.number = card.number.replace(/\D/g,'');
+
+      if (card.rarity) {
+        switch (card.rarity.toLowerCase()) {
+          case constants.RARITIES.COMMON:
+            card.raritySortingIndex = 1;
+            break;
+          case constants.RARITIES.UNCOMMON:
+            card.raritySortingIndex = 2;
+            break;
+          case constants.RARITIES.RARE:
+          case constants.RARITIES.RARE_HOLO:
+            card.raritySortingIndex = 3;
+            break;
+          case constants.RARITIES.LEGEND:
+          case constants.RARITIES.RADIANT_RARE:
+          case constants.RARITIES.RARE_ACE:
+          case constants.RARITIES.RARE_BREAK:
+          case constants.RARITIES.RARE_HOLO_EX:
+          case constants.RARITIES.RARE_HOLO_GX:
+          case constants.RARITIES.RARE_HOLO_LVX:
+          case constants.RARITIES.RARE_HOLO_STAR:
+          case constants.RARITIES.RARE_HOLO_V:
+          case constants.RARITIES.RARE_HOLO_VMAX:
+          case constants.RARITIES.RARE_HOLO_VSTAR:
+          case constants.RARITIES.RARE_PRIME:
+          case constants.RARITIES.RARE_PRISM_STAR:
+          case constants.RARITIES.RARE_SHINY:
+          case constants.RARITIES.RARE_SHINY_GX:
+          case constants.RARITIES.RARE_ULTRA:
+            card.raritySortingIndex = 4;
+            break;
+          case constants.RARITIES.RARE_RAINBOW:
+          case constants.RARITIES.RARE_SECRET:
+          case constants.RARITIES.RARE_SHINING:
+            card.raritySortingIndex = 5;
+            break;
+          default:
+            card.raritySortingIndex = 6;
+            break;
+        }
+      } else {
+        card.raritySortingIndex = 6;
       }
 
       if (card.types) {

@@ -8,11 +8,7 @@ import { Size } from 'src/app/models';
   templateUrl: './size.component.html'
 })
 export class SizeComponent implements OnInit {
-  sizes: Size[] = [
-    { width: 2, height: 2 },
-    { width: 3, height: 3 },
-    { width: 4, height: 3 }
-  ]
+  sizes: Size[] = [];
 
   constructor(
     private store: StoreService,
@@ -24,6 +20,8 @@ export class SizeComponent implements OnInit {
       this.router.navigate(['/new']);
       return;
     }
+
+    this.sizes = this.store.sizes;
   }
 
   getSizeLabel(size: Size): string {

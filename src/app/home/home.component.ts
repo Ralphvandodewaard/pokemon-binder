@@ -9,7 +9,7 @@ import { Preset, Series, Set } from '../models';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-  isLoading = false;
+  isLoading = true;
 
   presets: Preset[] = [];
 
@@ -23,14 +23,18 @@ export class HomeComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.isLoading = true;
-
-    if (localStorage.getItem('presets')) {
-      this.presets = JSON.parse(localStorage.getItem('presets')!);
-    }
-
     this.sets = await this.store.getAllSets();
     this.series = this.store.getSeries();
+    
+    if (localStorage.getItem('presets')) {
+      this.presets = JSON.parse(localStorage.getItem('presets')!);
+
+      this.presets.forEach((preset: Preset) => {
+        const set: Set = this.sets.filter((set: Set) => set.id === preset.set.id)[0];
+        preset.set.logo = set.images.logo;
+        preset.set.name = set.name;
+      })
+    }
 
     this.isLoading = false;
   }

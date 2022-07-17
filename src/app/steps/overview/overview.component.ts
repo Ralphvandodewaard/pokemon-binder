@@ -61,12 +61,17 @@ export class OverviewComponent implements OnInit {
 
       const payload: Preset = {
         id: presetId,
-        set: this.selectedSet!,
-        size: this.selectedSize!,
-        style: this.selectedStyle!
+        set: {
+          id: this.selectedSet!.id
+        },
+        size: {
+          width: this.selectedSize!.width,
+          height: this.selectedSize!.height
+        },
+        style: this.selectedStyle!.label
       }
-      presets.push(payload);
 
+      presets.push(payload);
       localStorage.setItem('presets', JSON.stringify(presets));
 
       this.store.selectedPreset = payload;

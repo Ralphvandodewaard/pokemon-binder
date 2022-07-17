@@ -8,18 +8,7 @@ import { Size, Style } from 'src/app/models';
   templateUrl: './style.component.html'
 })
 export class StyleComponent implements OnInit {
-  styles: Style[] = [
-    {
-      label: 'Collection',
-      isCollection: true,
-      description: "Cards not in your collection will be grayed out by default. Click on a card's checkmark to save it to your collection. This data persists across binders."
-    },
-    {
-      label: 'View',
-      isCollection: false,
-      description: 'All cards in this binder will be displayed as if they were collected.'
-    }
-  ]
+  styles: Style[] = [];
 
   selectedSize: Size | null = null;
 
@@ -34,6 +23,7 @@ export class StyleComponent implements OnInit {
       return;
     }
 
+    this.styles = this.store.styles;
     this.selectedSize = this.store.selectedSize;
   }
 

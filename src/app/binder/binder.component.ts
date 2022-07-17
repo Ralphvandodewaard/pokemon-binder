@@ -64,9 +64,20 @@ export class BinderComponent implements OnInit {
     }
 
     this.selectedPreset = this.store.selectedPreset;
-    this.selectedSet = this.selectedPreset ? this.selectedPreset.set : this.store.selectedSet;
-    this.selectedSize = this.selectedPreset ? this.selectedPreset.size : this.store.selectedSize;
-    this.selectedStyle = this.selectedPreset ? this.selectedPreset.style : this.store.selectedStyle;
+    if (this.selectedPreset) {
+      const sets: Set[] = await this.store.getAllSets();
+      this.selectedSet = sets.filter((set: Set) => set.id === this.selectedPreset!.set.id)[0];
+
+      const sizes: Size[] = this.store.sizes;
+      this.selectedSize = sizes.filter((size: Size) => size.width === this.selectedPreset!.size.width && size.height === this.selectedPreset!.size.height)[0];
+
+      const styles: Style[] = this.store.styles;
+      this.selectedStyle = styles.filter((style: Style) => style.label === this.selectedPreset!.style)[0];
+    } else {
+      this.selectedSet = this.store.selectedSet;
+      this.selectedSize = this.store.selectedSize;
+      this.selectedStyle = this.store.selectedStyle;
+    }
 
     this.cards = await this.store.getCards();
     this.filteredCards = this.cards;
@@ -75,30 +86,38 @@ export class BinderComponent implements OnInit {
       this.collectedCardIds = JSON.parse(localStorage.getItem('collected-cards')!);
     }
 
-    if (this.selectedPreset && this.selectedPreset.sortBy) {
-      const selectedSortingOption: string = this.selectedPreset.sortBy;
+    if (this.selectedPreset) {
+      if (this.selectedPreset.sortBy) {
+        const selectedSortingOption: string = this.selectedPreset.sortBy;
 
-      this.sortingOptions.forEach((option: Filter) => {
-        if (option.key === selectedSortingOption) {
-          option.isEnabled = true;
-        } else {
-          option.isEnabled = false;
+        this.sortingOptions.forEach((option: Filter) => {
+          if (option.key === selectedSortingOption) {
+            option.isEnabled = true;
+          } else {
+            option.isEnabled = false;
+          }
+        })
+
+        if (!this.selectedPreset.filters) {
+          this.sortCards();
         }
-      })
-    }
+      }
 
-    if (this.selectedPreset && this.selectedPreset.filters) {
-      this.superTypeFilters[0].isEnabled = this.selectedPreset.filters.pokemon;
-      this.superTypeFilters[1].isEnabled = this.selectedPreset.filters.trainers;
-      this.superTypeFilters[2].isEnabled = this.selectedPreset.filters.energies;
+      if (this.selectedPreset.filters) {
+        this.superTypeFilters[0].isEnabled = this.selectedPreset.filters.pokemon;
+        this.superTypeFilters[1].isEnabled = this.selectedPreset.filters.trainers;
+        this.superTypeFilters[2].isEnabled = this.selectedPreset.filters.energies;
 
-      this.rarityFilters[0].isEnabled = this.selectedPreset.filters.common;
-      this.rarityFilters[1].isEnabled = this.selectedPreset.filters.uncommon;
-      this.rarityFilters[2].isEnabled = this.selectedPreset.filters.rare;
-      this.rarityFilters[3].isEnabled = this.selectedPreset.filters.ultraRare;
-      this.rarityFilters[4].isEnabled = this.selectedPreset.filters.secretRare;
+        this.rarityFilters[0].isEnabled = this.selectedPreset.filters.common;
+        this.rarityFilters[1].isEnabled = this.selectedPreset.filters.uncommon;
+        this.rarityFilters[2].isEnabled = this.selectedPreset.filters.rare;
+        this.rarityFilters[3].isEnabled = this.selectedPreset.filters.ultraRare;
+        this.rarityFilters[4].isEnabled = this.selectedPreset.filters.secretRare;
 
-      this.filterCards();
+        this.filterCards();
+      } 
+    } else {
+      this.sortCards();
     }
 
     this.isLoading = false;
@@ -333,7 +352,7 @@ export class BinderComponent implements OnInit {
 
     switch (selectedOption.key) {
       case 'number':
-        this.filteredCards.sort((a: Card, b: Card) => Number(a.number) - Number(b.number));
+        this.filteredCards.sort((a: Card, b: Card) => Number(a.number) > Number(b.number) ? 1 : -1);
         break;
       case 'rarity':
         this.filteredCards.sort((a: Card, b: Card) => {
@@ -372,7 +391,7 @@ export class BinderComponent implements OnInit {
   }
 
   get isCollection(): boolean {
-    return this.selectedPreset ? this.selectedPreset.style.isCollection : this.selectedStyle!.isCollection;
+    return this.selectedStyle!.isCollection;
   }
 
   cardCollected(cardId: string): boolean {

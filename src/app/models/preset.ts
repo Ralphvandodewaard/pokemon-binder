@@ -1,12 +1,15 @@
-import { Set } from "./set";
-import { Size } from "./size";
-import { Style } from "./style";
-
 export interface Preset {
   id: number,
-  set: Set,
-  size: Size,
-  style: Style,
+  set: {
+    id: string,
+    name?: string,
+    logo?: string
+  }
+  size: {
+    width: number,
+    height: number
+  },
+  style: string,
   filters?: {
     pokemon: boolean,
     trainers: boolean,

@@ -16,8 +16,8 @@
     *ngFor="let preset of presets; index as i"
     label="Load preset"
     [image]="{
-      src: preset.set.images.logo,
-      alt: preset.set.name
+      src: preset.set.logo!,
+      alt: preset.set.name!
     }"
     [isDeletable]="true"
     (delete)="deletePreset(i)"
