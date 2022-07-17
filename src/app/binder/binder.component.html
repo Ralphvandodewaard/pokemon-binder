@@ -3,41 +3,11 @@
   *ngIf="!isLoading && selectedSet && selectedSize && selectedStyle"
   class="flex flex-col items-center gap-4"
 >
-  <div class="flex flex-col max-w-md w-full ">
-    <button
-      [ngClass]="settingsOpen ? 'rounded-t-3xl' : 'rounded-full'"
-      class="relative flex justify-center items-center w-full px-6 py-4 bg-primary text-white font-semibold border border-primary"
-      (click)="toggleSettings()"
-    >
-      <p>
-        Filters
-      </p>
-      <div class="absolute right-6 w-3">
-        <app-angle-down-icon *ngIf="!settingsOpen"></app-angle-down-icon>
-        <app-angle-up-icon *ngIf="settingsOpen"></app-angle-up-icon>
-      </div>
-    </button>
-    <div
-      class="flex flex-col border-2 border-t-0 border-primary rounded-b-lg divide-y divide-gray-200 overflow-hidden"
-      *ngIf="settingsOpen"
-    >
-      <button
-        *ngFor="let filter of filters"
-        class="flex items-center gap-4 w-full px-6 py-4 bg-white"
-        (click)="toggleFilter(filter)"
-      >
-        <p class="text-sm mobile:text-base">
-          {{ filter.label }}
-        </p>
-        <div
-          [ngClass]="filter.isEnabled ? 'bg-green' : 'bg-disabled'"
-          class="h-6 w-6 ml-auto p-1 rounded-full"
-        >
-          <app-checkmark-icon></app-checkmark-icon>
-        </div>
-      </button>
-    </div>
-  </div>
+  <app-binder-settings
+    [superTypeFilters]="superTypeFilters"
+    [rarityFilters]="rarityFilters"
+    (toggleFilterEnabled)="toggleFilterEnabled($event)"
+  ></app-binder-settings>
   <div class="flex py-2 overflow-x-auto">
     <div
       *ngIf="cardsLeft.length == 0 || cardsRight.length == 0"

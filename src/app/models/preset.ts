@@ -8,6 +8,9 @@ export interface Preset {
   size: Size,
   style: Style,
   filters?: {
+    pokemon: boolean,
+    trainers: boolean,
+    energies: boolean,
     common: boolean,
     uncommon: boolean,
     rare: boolean,

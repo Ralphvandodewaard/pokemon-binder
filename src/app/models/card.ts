@@ -13,5 +13,6 @@ export interface Card {
   rarity: string,
   set: Set,
   subtypes: string[],
+  supertype: string,
   types: string[]
 }

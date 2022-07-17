@@ -1,6 +1,11 @@
 export default {
   API_URL: 'https://api.pokemontcg.io/v2',
   IMAGES_URL: 'https://images.pokemontcg.io',
+  SUPERTYPES: {
+    POKEMON: 'pokémon',
+    TRAINER: 'trainer',
+    ENERGY: 'energy'
+  },
   RARITIES: {
     AMAZING_RARE: 'amazing rare',
     CLASSIC_COLLECTION: 'classic collection',

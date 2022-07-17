@@ -27,16 +27,20 @@ export class BinderComponent implements OnInit {
 
   currentPageRight = 1;
 
-  settingsOpen = false;
-
   collectedCardIds: string[] = [];
 
-  filters: Filter[] = [
-    { key: 'common', label: 'Include common cards', isEnabled: true },
-    { key: 'uncommon', label: 'Include uncommon cards', isEnabled: true },
-    { key: 'rare', label: 'Include rare cards', isEnabled: true },
-    { key: 'ultra rare', label: 'Include ultra rare cards', isEnabled: true },
-    { key: 'secret rare', label: 'Include secret rare cards', isEnabled: true }
+  superTypeFilters: Filter[] = [
+    { key: 'pokemon', label: 'Pokemon', isEnabled: true },
+    { key: 'trainer', label: 'Trainers', isEnabled: true },
+    { key: 'energy', label: 'Energies', isEnabled: true }
+  ];
+
+  rarityFilters: Filter[] = [
+    { key: 'common', label: 'Commons', isEnabled: true },
+    { key: 'uncommon', label: 'Uncommons', isEnabled: true },
+    { key: 'rare', label: 'Rares', isEnabled: true },
+    { key: 'ultra rare', label: 'Ultra rares', isEnabled: true },
+    { key: 'secret rare', label: 'Secret rares', isEnabled: true }
   ];
 
   constructor(
@@ -66,11 +70,15 @@ export class BinderComponent implements OnInit {
     }
 
     if (this.selectedPreset && this.selectedPreset.filters) {
-      this.filters[0].isEnabled = this.selectedPreset.filters.common;
-      this.filters[1].isEnabled = this.selectedPreset.filters.uncommon;
-      this.filters[2].isEnabled = this.selectedPreset.filters.rare;
-      this.filters[3].isEnabled = this.selectedPreset.filters.ultraRare;
-      this.filters[4].isEnabled = this.selectedPreset.filters.secretRare;
+      this.superTypeFilters[0].isEnabled = this.selectedPreset.filters.pokemon;
+      this.superTypeFilters[1].isEnabled = this.selectedPreset.filters.trainers;
+      this.superTypeFilters[2].isEnabled = this.selectedPreset.filters.energies;
+
+      this.rarityFilters[0].isEnabled = this.selectedPreset.filters.common;
+      this.rarityFilters[1].isEnabled = this.selectedPreset.filters.uncommon;
+      this.rarityFilters[2].isEnabled = this.selectedPreset.filters.rare;
+      this.rarityFilters[3].isEnabled = this.selectedPreset.filters.ultraRare;
+      this.rarityFilters[4].isEnabled = this.selectedPreset.filters.secretRare;
 
       this.filterCards();
     }
@@ -170,11 +178,7 @@ export class BinderComponent implements OnInit {
     ];
   }
 
-  toggleSettings(): void {
-    this.settingsOpen = !this.settingsOpen;
-  }
-
-  toggleFilter(filter: Filter): void {
+  toggleFilterEnabled(filter: Filter): void {
     filter.isEnabled = !filter.isEnabled;
 
     this.filterCards();
@@ -194,11 +198,14 @@ export class BinderComponent implements OnInit {
       let preset = presets.filter((preset: Preset) => preset.id === this.selectedPreset!.id)[0];
 
       preset.filters = {
-        common: this.filters[0].isEnabled,
-        uncommon: this.filters[1].isEnabled,
-        rare: this.filters[2].isEnabled,
-        ultraRare: this.filters[3].isEnabled,
-        secretRare: this.filters[4].isEnabled,
+        pokemon: this.superTypeFilters[0].isEnabled,
+        trainers: this.superTypeFilters[1].isEnabled,
+        energies: this.superTypeFilters[2].isEnabled,
+        common: this.rarityFilters[0].isEnabled,
+        uncommon: this.rarityFilters[1].isEnabled,
+        rare: this.rarityFilters[2].isEnabled,
+        ultraRare: this.rarityFilters[3].isEnabled,
+        secretRare: this.rarityFilters[4].isEnabled,
       }
 
       localStorage.setItem('presets', JSON.stringify(presets));
@@ -208,7 +215,25 @@ export class BinderComponent implements OnInit {
   filterCards(): void {
     this.filteredCards = this.cards;
 
-    this.filters.forEach((filter: Filter) => {
+    this.superTypeFilters.forEach((filter: Filter) => {
+      if (!filter.isEnabled) {
+        switch (filter.key) {
+          case 'pokemon':
+            this.filteredCards = this.filteredCards.filter((card: Card) => card.supertype.toLowerCase() !== constants.SUPERTYPES.POKEMON);
+            break;
+          case 'trainer':
+            this.filteredCards = this.filteredCards.filter((card: Card) => card.supertype.toLowerCase() !== constants.SUPERTYPES.TRAINER);
+            break;
+          case 'energy':
+            this.filteredCards = this.filteredCards.filter((card: Card) => card.supertype.toLowerCase() !== constants.SUPERTYPES.ENERGY);
+            break;
+          default:
+            break;
+        }
+      }
+    })
+
+    this.rarityFilters.forEach((filter: Filter) => {
       if (!filter.isEnabled) {
         switch (filter.key) {
           case 'common':
