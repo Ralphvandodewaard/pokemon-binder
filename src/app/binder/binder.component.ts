@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../api/store.service';
-import { Card, Filter, Preset, Set, Size, Style } from '../models';
+import { Card, Filter, Binder, Set, Size, Style } from '../models';
 import constants from '../shared/constants';
 
 @Component({
@@ -17,7 +17,7 @@ export class BinderComponent implements OnInit {
 
   selectedStyle: Style | null = null;
 
-  selectedPreset: Preset | null = null;
+  selectedBinder: Binder | null = null;
 
   cards: Card[] = [];
 
@@ -57,22 +57,22 @@ export class BinderComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     if (
       (!this.store.selectedSet || !this.store.selectedSize || !this.store.selectedStyle) &&
-      !this.store.selectedPreset
+      !this.store.selectedBinder
       ) {
       this.router.navigate(['/']);
       return;
     }
 
-    this.selectedPreset = this.store.selectedPreset;
-    if (this.selectedPreset) {
+    this.selectedBinder = this.store.selectedBinder;
+    if (this.selectedBinder) {
       const sets: Set[] = await this.store.getAllSets();
-      this.selectedSet = sets.filter((set: Set) => set.id === this.selectedPreset!.set.id)[0];
+      this.selectedSet = sets.filter((set: Set) => set.id === this.selectedBinder!.set.id)[0];
 
       const sizes: Size[] = this.store.sizes;
-      this.selectedSize = sizes.filter((size: Size) => size.width === this.selectedPreset!.size.width && size.height === this.selectedPreset!.size.height)[0];
+      this.selectedSize = sizes.filter((size: Size) => size.width === this.selectedBinder!.size.width && size.height === this.selectedBinder!.size.height)[0];
 
       const styles: Style[] = this.store.styles;
-      this.selectedStyle = styles.filter((style: Style) => style.label === this.selectedPreset!.style)[0];
+      this.selectedStyle = styles.filter((style: Style) => style.label === this.selectedBinder!.style)[0];
     } else {
       this.selectedSet = this.store.selectedSet;
       this.selectedSize = this.store.selectedSize;
@@ -86,9 +86,9 @@ export class BinderComponent implements OnInit {
       this.collectedCardIds = JSON.parse(localStorage.getItem('collected-cards')!);
     }
 
-    if (this.selectedPreset) {
-      if (this.selectedPreset.sortBy) {
-        const selectedSortingOption: string = this.selectedPreset.sortBy;
+    if (this.selectedBinder) {
+      if (this.selectedBinder.sortBy) {
+        const selectedSortingOption: string = this.selectedBinder.sortBy;
 
         this.sortingOptions.forEach((option: Filter) => {
           if (option.key === selectedSortingOption) {
@@ -98,21 +98,21 @@ export class BinderComponent implements OnInit {
           }
         })
 
-        if (!this.selectedPreset.filters) {
+        if (!this.selectedBinder.filters) {
           this.sortCards();
         }
       }
 
-      if (this.selectedPreset.filters) {
-        this.superTypeFilters[0].isEnabled = this.selectedPreset.filters.pokemon;
-        this.superTypeFilters[1].isEnabled = this.selectedPreset.filters.trainers;
-        this.superTypeFilters[2].isEnabled = this.selectedPreset.filters.energies;
+      if (this.selectedBinder.filters) {
+        this.superTypeFilters[0].isEnabled = this.selectedBinder.filters.pokemon;
+        this.superTypeFilters[1].isEnabled = this.selectedBinder.filters.trainers;
+        this.superTypeFilters[2].isEnabled = this.selectedBinder.filters.energies;
 
-        this.rarityFilters[0].isEnabled = this.selectedPreset.filters.common;
-        this.rarityFilters[1].isEnabled = this.selectedPreset.filters.uncommon;
-        this.rarityFilters[2].isEnabled = this.selectedPreset.filters.rare;
-        this.rarityFilters[3].isEnabled = this.selectedPreset.filters.ultraRare;
-        this.rarityFilters[4].isEnabled = this.selectedPreset.filters.secretRare;
+        this.rarityFilters[0].isEnabled = this.selectedBinder.filters.common;
+        this.rarityFilters[1].isEnabled = this.selectedBinder.filters.uncommon;
+        this.rarityFilters[2].isEnabled = this.selectedBinder.filters.rare;
+        this.rarityFilters[3].isEnabled = this.selectedBinder.filters.ultraRare;
+        this.rarityFilters[4].isEnabled = this.selectedBinder.filters.secretRare;
 
         this.filterCards();
       } 
@@ -226,15 +226,15 @@ export class BinderComponent implements OnInit {
       this.goToPage('last');
     }
 
-    if (this.selectedPreset) {
-      let presets: Preset[] = [];
-      if (localStorage.getItem('presets')) {
-        presets = JSON.parse(localStorage.getItem('presets')!);
+    if (this.selectedBinder) {
+      let binders: Binder[] = [];
+      if (localStorage.getItem('saved-binders')) {
+        binders = JSON.parse(localStorage.getItem('saved-binders')!);
       }
 
-      let preset = presets.filter((preset: Preset) => preset.id === this.selectedPreset!.id)[0];
+      let binder = binders.filter((binder: Binder) => binder.id === this.selectedBinder!.id)[0];
 
-      preset.filters = {
+      binder.filters = {
         pokemon: this.superTypeFilters[0].isEnabled,
         trainers: this.superTypeFilters[1].isEnabled,
         energies: this.superTypeFilters[2].isEnabled,
@@ -245,7 +245,7 @@ export class BinderComponent implements OnInit {
         secretRare: this.rarityFilters[4].isEnabled,
       }
 
-      localStorage.setItem('presets', JSON.stringify(presets));
+      localStorage.setItem('saved-binders', JSON.stringify(binders));
     }
   }
 
@@ -333,16 +333,16 @@ export class BinderComponent implements OnInit {
 
       this.sortCards();
 
-      if (this.selectedPreset) {
-        let presets: Preset[] = [];
-        if (localStorage.getItem('presets')) {
-          presets = JSON.parse(localStorage.getItem('presets')!);
+      if (this.selectedBinder) {
+        let binders: Binder[] = [];
+        if (localStorage.getItem('saved-binders')) {
+          binders = JSON.parse(localStorage.getItem('saved-binders')!);
         }
   
-        let preset: Preset = presets.filter((preset: Preset) => preset.id === this.selectedPreset!.id)[0]; 
-        preset.sortBy = this.sortingOptions.filter((option: Filter) => option.isEnabled)[0].key;
+        let binder: Binder = binders.filter((binder: Binder) => binder.id === this.selectedBinder!.id)[0]; 
+        binder.sortBy = this.sortingOptions.filter((option: Filter) => option.isEnabled)[0].key;
   
-        localStorage.setItem('presets', JSON.stringify(presets));
+        localStorage.setItem('saved-binders', JSON.stringify(binders));
       }
     }
   }

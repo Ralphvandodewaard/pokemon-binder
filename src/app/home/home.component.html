@@ -1,7 +1,7 @@
 <app-loading *ngIf="isLoading"></app-loading>
 <app-step-wrapper
   *ngIf="!isLoading"
-  [ngClass]="presets.length < 5 ? 'flex justify-center' : ''"
+  [ngClass]="binders.length < 5 ? 'flex justify-center' : ''"
 >
   <app-button
     label="New binder"
@@ -13,19 +13,19 @@
     (click)="navigateToNew()"
   ></app-button>
   <app-button
-    *ngFor="let preset of presets; index as i"
-    label="Load preset"
+    *ngFor="let binder of binders; index as i"
+    label="Load binder"
     [image]="{
-      src: preset.set.logo!,
-      alt: preset.set.name!
+      src: binder.set.logo!,
+      alt: binder.set.name!
     }"
     [isDeletable]="true"
-    (delete)="deletePreset(i)"
-    (click)="navigateToBinder(preset)"
+    (delete)="deleteBinder(i)"
+    (click)="navigateToBinder(binder)"
   ></app-button>
   <app-button
-    *ngIf="presets.length == 0"
-    label="Load preset"
+    *ngIf="binders.length == 0"
+    label="Load binder"
     [image]="{
       src: 'https://images.pokemontcg.io/base1/logo.png',
       alt: 'Base'

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from 'src/app/api/store.service';
-import { Preset, Series, Set, Size, Style } from 'src/app/models';
+import { Binder, Series, Set, Size, Style } from 'src/app/models';
 
 @Component({
   selector: 'app-overview',
@@ -16,7 +16,7 @@ export class OverviewComponent implements OnInit {
 
   selectedStyle: Style | null = null;
 
-  saveAsPreset = false;
+  saveBinder = false;
 
   constructor(
     private store: StoreService,
@@ -43,24 +43,24 @@ export class OverviewComponent implements OnInit {
     this.router.navigate([`/new/${setting}`]);
   }
 
-  toggleSaveAsPreset(): void {
-    this.saveAsPreset = !this.saveAsPreset;
+  toggleSaveBinder(): void {
+    this.saveBinder = !this.saveBinder;
   }
 
   navigateToBinder(): void {
-    if (this.saveAsPreset) {
-      let presets: Preset[] = [];
-      if (localStorage.getItem('presets')) {
-        presets = JSON.parse(localStorage.getItem('presets')!);
+    if (this.saveBinder) {
+      let binders: Binder[] = [];
+      if (localStorage.getItem('saved-binders')) {
+        binders = JSON.parse(localStorage.getItem('saved-binders')!);
       }
 
-      let presetId = 1;
-      if (presets.length > 0) {
-        presetId = presets[presets.length - 1].id + 1;
+      let binderId = 1;
+      if (binders.length > 0) {
+        binderId = binders[binders.length - 1].id + 1;
       }
 
-      const payload: Preset = {
-        id: presetId,
+      const payload: Binder = {
+        id: binderId,
         set: {
           id: this.selectedSet!.id
         },
@@ -71,12 +71,12 @@ export class OverviewComponent implements OnInit {
         style: this.selectedStyle!.label
       }
 
-      presets.push(payload);
-      localStorage.setItem('presets', JSON.stringify(presets));
+      binders.push(payload);
+      localStorage.setItem('saved-binders', JSON.stringify(binders));
 
-      this.store.selectedPreset = payload;
+      this.store.selectedBinder = payload;
     } else {
-      this.store.selectedPreset = null;
+      this.store.selectedBinder = null;
     }
 
     this.router.navigate(['/binder']);

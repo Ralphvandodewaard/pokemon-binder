@@ -1,4 +1,4 @@
-export interface Preset {
+export interface Binder {
   id: number,
   set: {
     id: string,

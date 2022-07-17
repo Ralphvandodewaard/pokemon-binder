@@ -48,16 +48,16 @@
     </button>
     <button
       class="order-1 mobile:order-2 flex items-center gap-4 px-6 py-4 mobile:w-max bg-white border border-gray-200 rounded-full"
-      (click)="toggleSaveAsPreset()"
+      (click)="toggleSaveBinder()"
     >
       <div
-        [ngClass]="saveAsPreset ? 'bg-green' : 'bg-disabled'"
+        [ngClass]="saveBinder ? 'bg-green' : 'bg-disabled'"
         class="h-6 w-6 p-1 rounded-full"
       >
         <app-checkmark-icon></app-checkmark-icon>
       </div>
       <p>
-        Save as preset
+        Save binder
       </p>
     </button>
   </div>

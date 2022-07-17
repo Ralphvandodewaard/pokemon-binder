@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StoreService } from '../api/store.service';
-import { Preset, Series, Set } from '../models';
+import { Binder, Series, Set } from '../models';
 // import constants from '../shared/constants';
 
 @Component({
@@ -11,7 +11,7 @@ import { Preset, Series, Set } from '../models';
 export class HomeComponent implements OnInit {
   isLoading = true;
 
-  presets: Preset[] = [];
+  binders: Binder[] = [];
 
   sets: Set[] = [];
 
@@ -26,30 +26,30 @@ export class HomeComponent implements OnInit {
     this.sets = await this.store.getAllSets();
     this.series = this.store.getSeries();
     
-    if (localStorage.getItem('presets')) {
-      this.presets = JSON.parse(localStorage.getItem('presets')!);
+    if (localStorage.getItem('saved-binders')) {
+      this.binders = JSON.parse(localStorage.getItem('saved-binders')!);
 
-      this.presets.forEach((preset: Preset) => {
-        const set: Set = this.sets.filter((set: Set) => set.id === preset.set.id)[0];
-        preset.set.logo = set.images.logo;
-        preset.set.name = set.name;
+      this.binders.forEach((binder: Binder) => {
+        const set: Set = this.sets.filter((set: Set) => set.id === binder.set.id)[0];
+        binder.set.logo = set.images.logo;
+        binder.set.name = set.name;
       })
     }
 
     this.isLoading = false;
   }
 
-  deletePreset(index: number): void {
-    this.presets.splice(index, 1);
-    localStorage.setItem('presets', JSON.stringify(this.presets));
+  deleteBinder(index: number): void {
+    this.binders.splice(index, 1);
+    localStorage.setItem('saved-binders', JSON.stringify(this.binders));
   }
 
   navigateToNew(): void {
     this.router.navigate(['/new']);
   }
 
-  navigateToBinder(preset: Preset): void {
-    this.store.selectedPreset = preset;
+  navigateToBinder(binder: Binder): void {
+    this.store.selectedBinder = binder;
 
     this.router.navigate(['/binder']);
   }
