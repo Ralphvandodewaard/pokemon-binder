@@ -35,5 +35,18 @@ export default {
     UNCOMMON: 'uncommon',
     V: 'v',
     VM: 'vm'
+  },
+  TYPES: {
+    COLORLESS: 'colorless',
+    DARKNESS: 'darkness',
+    DRAGON: 'dragon',
+    FAIRY: 'fairy',
+    FIGHTING: 'fighting',
+    FIRE: 'fire',
+    GRASS: 'grass',
+    LIGHTNING: 'lightning',
+    METAL: 'metal',
+    PSYCHIC: 'psychic',
+    WATER: 'water',
   }
 };

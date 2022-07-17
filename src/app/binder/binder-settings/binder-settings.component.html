@@ -27,13 +27,35 @@
         <button
           *ngFor="let filter of filterCategory.filters"
           class="flex items-center gap-2 w-full px-6 py-3 mobile:py-4 bg-white"
-          (click)="emitToggleFilterEnabled(filter)"
+          (click)="toggleFilterEnabled.emit(filter)"
         >
           <p class="text-sm mobile:text-base">
             {{ filter.label }}
           </p>
           <div
             [ngClass]="filter.isEnabled ? 'bg-green' : 'bg-disabled'"
+            class="h-6 w-6 ml-auto p-1 rounded-full"
+          >
+            <app-checkmark-icon></app-checkmark-icon>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col gap-2">
+      <p class="px-6 text-sm mobile:text-base text-primary font-semibold">
+        Sort by
+      </p>
+      <div class="flex flex-col mobile:grid mobile:grid-cols-3 divide-y mobile:divide-y-0 mobile:divide-x divide-gray-200 border-t border-gray-200">
+        <button
+          *ngFor="let option of sortingOptions"
+          class="flex items-center gap-2 w-full px-6 py-3 mobile:py-4 bg-white"
+          (click)="toggleSortingOption.emit(option)"
+        >
+          <p class="text-sm mobile:text-base">
+            {{ option.label }}
+          </p>
+          <div
+            [ngClass]="option.isEnabled ? 'bg-green' : 'bg-disabled'"
             class="h-6 w-6 ml-auto p-1 rounded-full"
           >
             <app-checkmark-icon></app-checkmark-icon>

@@ -16,5 +16,6 @@ export interface Preset {
     rare: boolean,
     ultraRare: boolean,
     secretRare: boolean
-  }
+  },
+  sortBy?: string
 }

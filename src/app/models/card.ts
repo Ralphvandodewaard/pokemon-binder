@@ -1,8 +1,6 @@
 import { Set } from "./set"
 
 export interface Card {
-  evolvesFrom?: string,
-  evolvesTo?: string[],
   id: string,
   images: {
     large: string,
@@ -11,8 +9,10 @@ export interface Card {
   name: string,
   number: string,
   rarity: string,
+  raritySortingIndex?: number,
   set: Set,
   subtypes: string[],
   supertype: string,
-  types: string[]
+  types?: string[]
+  typeSortingIndex?: number
 }

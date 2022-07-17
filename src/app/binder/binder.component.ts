@@ -43,6 +43,12 @@ export class BinderComponent implements OnInit {
     { key: 'secret rare', label: 'Secret rares', isEnabled: true }
   ];
 
+  sortingOptions: Filter[] = [
+    { key: 'number', label: 'Number', isEnabled: true },
+    { key: 'rarity', label: 'Rarity', isEnabled: false },
+    { key: 'type', label: 'Type', isEnabled: false }
+  ];
+
   constructor(
     private store: StoreService,
     private router: Router
@@ -67,6 +73,18 @@ export class BinderComponent implements OnInit {
 
     if (localStorage.getItem('collected-cards')) {
       this.collectedCardIds = JSON.parse(localStorage.getItem('collected-cards')!);
+    }
+
+    if (this.selectedPreset && this.selectedPreset.sortBy) {
+      const selectedSortingOption: string = this.selectedPreset.sortBy;
+
+      this.sortingOptions.forEach((option: Filter) => {
+        if (option.key === selectedSortingOption) {
+          option.isEnabled = true;
+        } else {
+          option.isEnabled = false;
+        }
+      })
     }
 
     if (this.selectedPreset && this.selectedPreset.filters) {
@@ -281,7 +299,63 @@ export class BinderComponent implements OnInit {
       }
     })
 
-    this.filteredCards.sort((a: Card, b: Card) => Number(a.id.split('-')[1]) - Number(b.id.split('-')[1]));
+    this.sortCards();
+  }
+
+  toggleSortingOption(selectedOption: Filter): void {
+    if (!selectedOption.isEnabled) {
+      this.sortingOptions.forEach((option: Filter) => {
+        if (option.key === selectedOption.key) {
+          option.isEnabled = true;
+        } else {
+          option.isEnabled = false;
+        }
+      })
+
+      this.sortCards();
+
+      if (this.selectedPreset) {
+        let presets: Preset[] = [];
+        if (localStorage.getItem('presets')) {
+          presets = JSON.parse(localStorage.getItem('presets')!);
+        }
+  
+        let preset: Preset = presets.filter((preset: Preset) => preset.id === this.selectedPreset!.id)[0]; 
+        preset.sortBy = this.sortingOptions.filter((option: Filter) => option.isEnabled)[0].key;
+  
+        localStorage.setItem('presets', JSON.stringify(presets));
+      }
+    }
+  }
+
+  sortCards(): void {
+    const selectedOption: Filter = this.sortingOptions.filter((option: Filter) => option.isEnabled)[0];
+
+    switch (selectedOption.key) {
+      case 'number':
+        this.filteredCards.sort((a: Card, b: Card) => Number(a.number) - Number(b.number));
+        break;
+      case 'rarity':
+        this.filteredCards.sort((a: Card, b: Card) => {
+          if (a.raritySortingIndex === b.raritySortingIndex) {
+            return Number(a.number) > Number(b.number) ? 1 : -1;
+          }
+      
+          return a.raritySortingIndex! > b.raritySortingIndex! ? 1 : -1;
+        });
+        break;
+      case 'type':
+        this.filteredCards.sort((a: Card, b: Card) => {
+          if (a.typeSortingIndex === b.typeSortingIndex) {
+            return Number(a.number) > Number(b.number) ? 1 : -1;
+          }
+      
+          return a.typeSortingIndex! > b.typeSortingIndex! ? 1 : -1;
+        });
+        break;
+      default:
+        break;
+    }
   }
 
   get collectedCardsAmount(): number {

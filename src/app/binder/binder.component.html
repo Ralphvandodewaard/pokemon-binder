@@ -6,7 +6,9 @@
   <app-binder-settings
     [superTypeFilters]="superTypeFilters"
     [rarityFilters]="rarityFilters"
+    [sortingOptions]="sortingOptions"
     (toggleFilterEnabled)="toggleFilterEnabled($event)"
+    (toggleSortingOption)="toggleSortingOption($event)"
   ></app-binder-settings>
   <div class="flex py-2 overflow-x-auto">
     <div

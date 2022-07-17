@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PokemonService } from '../api/pokemon.service';
 import { firstValueFrom } from 'rxjs';
 import { Card, Preset, Series, Set, Size, Style } from '../models';
+import constants from '../shared/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,88 @@ export class StoreService {
       data = await firstValueFrom(this.pokemon.getCards(setId, 2));
       this.cards = this.cards.concat(data);
     }
+  
+    this.cards.forEach((card: Card) => {
+      switch (card.rarity.toLowerCase()) {
+        case constants.RARITIES.COMMON:
+          card.raritySortingIndex = 1;
+          break;
+        case constants.RARITIES.UNCOMMON:
+          card.raritySortingIndex = 2;
+          break;
+        case constants.RARITIES.RARE:
+        case constants.RARITIES.RARE_HOLO:
+          card.raritySortingIndex = 3;
+          break;
+        case constants.RARITIES.LEGEND:
+        case constants.RARITIES.RADIANT_RARE:
+        case constants.RARITIES.RARE_ACE:
+        case constants.RARITIES.RARE_BREAK:
+        case constants.RARITIES.RARE_HOLO_EX:
+        case constants.RARITIES.RARE_HOLO_GX:
+        case constants.RARITIES.RARE_HOLO_LVX:
+        case constants.RARITIES.RARE_HOLO_STAR:
+        case constants.RARITIES.RARE_HOLO_V:
+        case constants.RARITIES.RARE_HOLO_VMAX:
+        case constants.RARITIES.RARE_HOLO_VSTAR:
+        case constants.RARITIES.RARE_PRIME:
+        case constants.RARITIES.RARE_PRISM_STAR:
+        case constants.RARITIES.RARE_SHINY:
+        case constants.RARITIES.RARE_SHINY_GX:
+        case constants.RARITIES.RARE_ULTRA:
+          card.raritySortingIndex = 4;
+          break;
+        case constants.RARITIES.RARE_RAINBOW:
+        case constants.RARITIES.RARE_SECRET:
+        case constants.RARITIES.RARE_SHINING:
+          card.raritySortingIndex = 5;
+          break;
+        default:
+          card.raritySortingIndex = 6;
+          break;
+      }
+
+      if (card.types) {
+        switch (card.types[0].toLowerCase()) {
+          case constants.TYPES.GRASS:
+            card.typeSortingIndex = 1;
+            break;
+          case constants.TYPES.FIRE:
+            card.typeSortingIndex = 2;
+            break;
+          case constants.TYPES.WATER:
+            card.typeSortingIndex = 3;
+            break;
+          case constants.TYPES.LIGHTNING:
+            card.typeSortingIndex = 4;
+            break;
+          case constants.TYPES.PSYCHIC:
+            card.typeSortingIndex = 5;
+            break;
+          case constants.TYPES.FIGHTING:
+            card.typeSortingIndex = 6;
+            break;
+          case constants.TYPES.DARKNESS:
+            card.typeSortingIndex = 7;
+            break;
+          case constants.TYPES.METAL:
+            card.typeSortingIndex = 8;
+            break;
+          case constants.TYPES.FAIRY:
+            card.typeSortingIndex = 9;
+            break;
+          case constants.TYPES.DRAGON:
+            card.typeSortingIndex = 10;
+            break;
+          case constants.TYPES.COLORLESS:
+            card.typeSortingIndex = 11;
+            break;
+        }
+      } else {
+        card.typeSortingIndex = 12;
+      }
+    })
+
     return this.cards;
   }
 

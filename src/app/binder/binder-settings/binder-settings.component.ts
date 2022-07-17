@@ -12,7 +12,11 @@ export class BinderSettingsComponent implements OnInit {
 
   @Input() rarityFilters!: Filter[];
 
+  @Input() sortingOptions!: Filter[];
+
   @Output() toggleFilterEnabled = new EventEmitter<Filter>();
+
+  @Output() toggleSortingOption = new EventEmitter<Filter>();
 
   settingsOpen = false;
 
@@ -30,10 +34,6 @@ export class BinderSettingsComponent implements OnInit {
 
   toggleSettingsOpen(): void {
     this.settingsOpen = !this.settingsOpen;
-  }
-
-  emitToggleFilterEnabled(filter: Filter): void {
-    this.toggleFilterEnabled.emit(filter);
   }
 
 }
