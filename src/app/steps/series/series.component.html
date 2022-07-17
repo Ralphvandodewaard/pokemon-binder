@@ -4,7 +4,7 @@
   label="01. Select Series"
 >
   <app-button
-    *ngFor="let series of series.reverse()"
+    *ngFor="let series of series"
     [label]="series.name"
     [image]="{
       src: series.logo,

@@ -69,6 +69,9 @@ export class StoreService {
       !set.id.includes('mcd') &&
       !set.id.includes('tk')
     );
+
+    this.setsInSeries = this.setsInSeries.reverse();
+
     return this.setsInSeries;
   }
 
@@ -91,6 +94,8 @@ export class StoreService {
         this.series.push(payload);
       }
     })
+
+    this.series = this.series.reverse();
 
     return this.series;
   }
